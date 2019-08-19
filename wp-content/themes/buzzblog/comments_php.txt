@@ -1,0 +1,92 @@
+<?php
+// Do not delete these lines
+	if (!empty($_SERVER['SCRIPT_FILENAME']) && 'comments.php' == basename($_SERVER['SCRIPT_FILENAME']))
+		die (theme_locals("please_do_not"));
+
+	if ( post_password_required() ) { ?>
+	<?php echo '<p class="nocomments">' . theme_locals("password") . '</p>'; ?>
+	<?php
+		return;
+	}
+?>
+<!-- BEGIN Comments -->	
+	<?php if ( have_comments() ) : ?>
+	<div id="comments" class="comment-holder">
+		<h5 class="comments-h">
+					<?php
+				printf( esc_html(_nx( '1 Response', '%1$s Responses', get_comments_number(), 'comments title', 'buzzblog' )),
+					number_format_i18n( get_comments_number() ), get_the_title() );
+			?>
+					</h5>
+		<ul class="commentlist">
+<?php wp_list_comments(	array(
+					'type'       => 'comment',
+					'callback'   => 'buzzblog_comment',
+					'avatar_size'=> 65,
+					'comment_date'=> buzzblog_getVariable('date_format') ? buzzblog_getVariable('date_format') : 'F j, Y'
+				)); ?>
+</ul>
+<ul class="pinglist">
+		<?php
+			wp_list_comments(
+				array(
+					'type'       => 'pings',
+					'callback'   => 'buzzblog_pings',
+					'avatar_size'=> 65,
+					'comment_date'=> buzzblog_getVariable('date_format') ? buzzblog_getVariable('date_format') : 'F j, Y'
+				)
+			);
+		?>
+</ul><!-- .ping-list -->
+		<div class="pagination">
+		  <?php paginate_comments_links(); ?> 
+		</div>
+	</div>
+	<?php else : // this is displayed if there are no comments so far ?>
+
+	<?php if ( comments_open() ) : ?>
+			<!-- If comments are open, but there are no comments. -->
+	   <?php echo '<p class="nocomments">' . theme_locals("no_comments_yet") . '</p>'; ?>
+		<?php else : // comments are closed ?>
+			<!-- If comments are closed. -->
+	   <?php //echo '<p class="nocomments">' . theme_locals("comments_are_closed") . '</p>'; ?>
+
+		<?php endif; ?>
+	
+	<?php endif; ?>
+	
+
+<?php
+$commenter = wp_get_current_commenter();
+$req = get_option( 'require_name_email' );
+$aria_req = ( $req ? " aria-required='true'" : '' );
+    $buzzblog_comments_args = array(
+        // change the title of send button
+        'label_submit'=> theme_locals("post_comment"),
+        // change the title of the reply section
+        'title_reply'=> theme_locals("what_do_you_think"),
+        // remove "Text or HTML to be displayed after the set of comment fields"
+        'comment_notes_after' => '',
+       
+        // redefine your own textarea (the comment body)
+        'comment_field' => '<div class="row"><div class="col-md-12"><div class="form-group"><textarea cols="45" rows="8" id="comment" class="form-control" name="comment" aria-required="true" placeholder="' . theme_locals("your_comment") . '"></textarea></div></div></div>',
+        'fields' => apply_filters( 'comment_form_default_fields', array(
+
+    'author' =>
+      '<div class="row"><div class="col-md-4"><div class="form-group">' . ( $req ? '' : '' ) .
+      '<input placeholder="' . theme_locals("author_name") . '" id="author" name="author" class="form-control" type="text" value="' . esc_attr( $commenter['comment_author'] ) .
+      '" size="30"' . $aria_req . ' /></div></div>',
+
+    'email' =>
+      '<div class="col-md-4"><div class="form-group">' . ( $req ? '' : '' ) .
+      '<input placeholder="' . theme_locals("email_comment") . '" id="email" name="email" class="form-control" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) .
+      '" size="30"' . $aria_req . ' /></div></div>',
+
+    'url' =>
+      '<div class="col-md-4"><div class="form-group"><input placeholder="' . theme_locals("website_comment") . '" id="url" name="url" class="form-control" type="text" value="' . esc_attr( $commenter['comment_author_url'] ) .
+      '" size="30" /></div></div></div>'
+    )
+        ),
+);
+
+comment_form($buzzblog_comments_args); ?>

@@ -1,0 +1,62 @@
+<?php /* Loop Name: Loop single */ ?>
+<?php if (have_posts()) : while (have_posts()) : the_post();         
+$buzzblog_standard_modern_layout = get_post_meta(get_the_ID(), 'buzzblog_standard_layout_format', true);
+
+if ($buzzblog_standard_modern_layout != esc_html__('modern','buzzblog')) {
+get_template_part('content');
+}else{
+get_template_part('content-modern');
+}
+?>
+<?php if (buzzblog_getVariable('single_pagination') !='no') { ?>
+					
+				<div class="row paging">
+				
+	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+		
+		<?php 
+		
+		$prev_post = get_adjacent_post(false, '', true);
+		
+		if ( $prev_post ) {
+		$prevthumb = wp_get_attachment_image_src( get_post_thumbnail_id( $prev_post->ID ), 'thumbnail' );
+if(!empty($prev_post)) {
+echo '<a href="' . get_permalink($prev_post->ID) . '" title="' . $prev_post->post_title . '">'; 
+if ( $prev_post &&  has_post_thumbnail( $prev_post->ID ) ) {
+echo '<figure class="thumbnail left"><img alt="'. theme_locals("prev_post") . '" class="nopin" width="150" height="150" src="' . esc_url( $prevthumb[0] ) . '" /></figure>';
+}
+echo '<div class="direct-link-left"><p>'. theme_locals("prev_post") . '</p><h5><span>' . $prev_post->post_title . '</span></h5></div></a>'; 
+} 
+}
+?>
+		
+		</div>
+	
+	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+				<?php 
+		
+		$next_post = get_adjacent_post(false, '', false);
+		
+		if ( $next_post ) {
+		$nextthumb = wp_get_attachment_image_src( get_post_thumbnail_id( $next_post->ID ), 'thumbnail' );
+if(!empty($next_post)) {
+echo '<a href="' . get_permalink($next_post->ID) . '" title="' . $next_post->post_title . '">'; 
+if ( has_post_thumbnail( $next_post->ID ) ) {
+echo '<figure class="thumbnail right"><img alt="' . theme_locals("next_post") . '" class="nopin" width="150" height="150" src="' . esc_url( $nextthumb[0] ) . '" /></figure>'; 
+}
+echo '<div class="direct-link-right"><p>' . theme_locals("next_post") . '</p><h5><span>'  . $next_post->post_title . '</span></h5></div></a>'; 
+} 
+}
+?>
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<?php } ?>
+<?php 
+$related_post = buzzblog_getVariable('related_post');		
+		if ($related_post !='no') { get_template_part( 'post-template/related-posts' ); } ?>
+			<?php comments_template('', true); ?>
+<?php
+	endwhile; endif; 
+?>

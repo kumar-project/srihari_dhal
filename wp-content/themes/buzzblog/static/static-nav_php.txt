@@ -1,0 +1,7 @@
+<?php if (has_nav_menu('primary-menu')) { ?> 
+<nav id="primary" class="sidemenu sidemenu-off" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement">
+				<?php buzzblog_theme_main_menu(); ?>
+				<!-- /#main-nav -->
+			</nav>
+<?php } else {echo '<a href="'.esc_url('/wp-admin/nav-menus.php').'" title="'.esc_html__( 'Add your menu to Primary Menu Theme Location', 'buzzblog' ).'">'.esc_html__( 'Add your menu to Primary Menu Theme Location', 'buzzblog' ).'</a>'; } ?>
+			

@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * Plugin Name:       Shindiri Woo Shop Slider Lite
+ * Plugin URI:        http://shindiristudio.com/wooslider/
+ * Description:       Woo Shop Slider Lite - WooCommerce slider for products and categories
+ * Version:           1.0.0
+ * Author:            Shindiri Studio
+ * Author URI:        http://shindiristudio.com/
+ * License:           
+ * License URI:       
+ * 
+ * Requires at least: 4.0
+ * Tested up to: 4.4.2
+ * 
+ * Text Domain:       shindiri-woo-slider
+ * Domain Path:       /languages
+ * 
+ * Requires at least: 2.3.0 WooCommerce plugin version, tested up to: 2.5.2
+ * Shortcode integration works with at least: 4.2.3 Visual Composer version, tested up to: 4.9.2
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-shindiri-woo-slider-activator.php
+ */
+function activate_shindiri_woo_slider() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-shindiri-woo-slider-activator.php';
+	Shindiri_Woo_Slider_Activator::activate();
+}
+
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-shindiri-woo-slider-deactivator.php
+ */
+function deactivate_shindiri_woo_slider() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-shindiri-woo-slider-deactivator.php';
+	Shindiri_Woo_Slider_Deactivator::deactivate();
+}
+
+register_activation_hook( __FILE__, 'activate_shindiri_woo_slider' );
+register_deactivation_hook( __FILE__, 'deactivate_shindiri_woo_slider' );
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/class-shindiri-woo-slider.php';
+
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_shindiri_woo_slider() {
+
+    $plugin = new Shindiri_Woo_Slider();
+    
+    // Check if WooCommerce is active even in multinetwork
+    
+    // Make sure function exists
+	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+	}
+    
+    if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+        return;
+    }
+
+	// Check if WooCommerce is active
+	if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		if (  ! is_plugin_active_for_network( 'woocommerce/woocommerce.php' ) ) {
+			
+			// Add no Woocommerce info functions
+			$plugin_admin = new Shindiri_Woo_Slider_Admin( $plugin->plugin_name, $plugin->version );
+			add_action( 'admin_menu', array( $plugin_admin, 'no_woocommerce_activated' ) );
+            // Change footer text for our post type pages and plugin info page
+			add_action( 'admin_footer_text', array( $plugin_admin, 'change_footer_admin_text' ) );
+			return;
+		}
+	}
+	
+	$plugin->run();
+
+}
+run_shindiri_woo_slider();
+?>

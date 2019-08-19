@@ -1,0 +1,36 @@
+<article id="post-<?php the_ID(); ?>" <?php post_class('post__holder'); ?>>
+	<div class="row">
+	<div class="col-md-12">
+
+<?php /* content */ ?>
+						
+	<!-- Post Content -->
+	<div class="post_content">
+	<?php 
+ 
+	if(is_singular()) : ?>
+
+	<!-- Post Content -->
+	<div class="isopad">
+		<?php the_content(); ?>
+		<?php wp_link_pages('before=<div class="pagelink">&after=</div>'); ?>
+		<div class="clear"></div>
+	</div>
+	<!-- //Post Content -->	
+	<?php endif; ?>
+<?php /* content */ ?>
+</div>
+	
+</div></div>
+
+
+<!-- Meta and share buttons -->
+
+	<div class="meta-line">
+	<?php get_template_part( 'post-template/share-buttons' ); ?>
+	</div>
+
+<!-- //Meta and share buttons -->
+<?php  if(is_singular() && buzzblog_getVariable('post_author_box')!='no' ) {
+get_template_part('post-template/post-author'); } ?>
+</article>

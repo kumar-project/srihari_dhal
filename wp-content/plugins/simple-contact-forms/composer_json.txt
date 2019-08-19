@@ -1,0 +1,16 @@
+{
+    "name": "owenr88/simple-contact-forms",
+    "description": "WordPress plugin designed to strip all the hassle so you can insert contact forms where you want and how you want.",
+    "keywords": ["contact forms", "enquiry forms", "contact", "forms", "enquiry", "wordpress", "plugin", "WordPress plugin"],
+    "authors": [
+        {
+            "name": "Owen Richards",
+            "email": "owen@biglemoncreative.co.uk",
+            "homepage": "http://www.biglemoncreative.co.uk",
+            "role": "Technical Director"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}

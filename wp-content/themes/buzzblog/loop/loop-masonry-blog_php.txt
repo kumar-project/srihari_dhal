@@ -1,0 +1,67 @@
+<?php /* Loop Name: Loop masonry blog */ ?>
+<!-- displays the tag's description from the Wordpress admin -->
+<?php 
+$blog_sidebar_pos = buzzblog_getVariable('blog_sidebar_pos');
+$blog_grid_special_post = buzzblog_getVariable('blog_grid_special_post');
+switch ($blog_sidebar_pos) {
+		case 'masonry2':
+			$blog_class = '6';
+			$counter_set = '3';
+		break;
+		case 'masonry2sideleft':
+			$blog_class = '6';
+			$counter_set = '3';
+		break;
+		case 'masonry2sideright':
+			$blog_class = '6';
+			$counter_set = '3';
+		break;
+		case 'masonry3':
+			$blog_class = '4';
+			$counter_set = '4';
+		break;
+		case 'masonry4':
+			$blog_class = '3';
+			$counter_set = '5';
+		break;
+	}
+	if ( get_query_var('paged') ) {
+		$paged = get_query_var('paged');
+	} elseif ( get_query_var('page') ) {
+		$paged = get_query_var('page');
+	} else {
+		$paged = 1;
+	}
+if($blog_sidebar_pos == 'masonry2sideleft' or $blog_sidebar_pos == 'masonry2sideright') {
+$args = array( 'post__not_in' => get_option( 'sticky_posts' ), 'ignore_sticky_posts' => 1, 'post_type' => 'post', 'paged' => $paged );
+}else{
+$args = array( 'post_type' => 'post', 'paged' => $paged );
+}
+$counter = 1;
+$loop = new WP_Query( $args );
+	 if ($loop->have_posts()) : 
+	 wp_enqueue_script('masonry');
+	 while ($loop->have_posts()) : $loop->the_post();
+	 ?>
+<?php if ($counter % $counter_set == 0 && $blog_grid_special_post == 'yes') { ?>
+<div class="ajax-post-wrapper block col-xs-12 col-sm-12 col-md-12" > 
+<div class="grid-block-full">
+		<div class="hider-posts"></div>
+<?php get_template_part('content'); ?>
+</div>
+</div>
+
+<?php }else{ ?>
+<div id="post-<?php the_ID(); ?>" class="ajax-post-wrapper block col-xs-12 col-sm-<?php echo esc_attr( $blog_class); ?> col-md-<?php echo esc_attr( $blog_class); ?>" > 
+<div class="grid-block-full">
+		<div class="hider-posts"></div>
+<?php get_template_part('content'); ?>
+	</div>
+</div>
+<?php } ?>
+<?php $counter ++ ; 
+endwhile; ?>
+<?php wp_reset_postdata(); ?>
+<?php else: ?>	
+<?php get_template_part( 'content', 'none' ); ?>
+<?php endif; ?>

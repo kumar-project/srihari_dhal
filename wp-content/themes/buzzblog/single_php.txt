@@ -1,0 +1,37 @@
+<?php get_header(); 
+$sidebarpost = get_post_meta(get_the_ID(), 'buzzblog_sidebar_option', true);?>
+<div class="content-holder clearfix">
+<?php $buzzblog_standard_modern_layout = get_post_meta(get_the_ID(), 'buzzblog_standard_layout_format', true);
+if ($buzzblog_standard_modern_layout == esc_html__('modern','buzzblog')) { ?>
+<?php $buzzblog_feat_image = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
+<div class="modern-layout parallax-image" data-stellar-background-ratio="0.5" data-stellar-horizontal-offset="0" data-stellar-vertical-offset="0" style="background:url(<?php echo esc_url($buzzblog_feat_image);?>) no-repeat; position:relative;text-align: center;background-repeat:no-repeat;background-size: cover;background-position: top center;">
+<div class="post-header-overlay"></div>
+<div class="container"><div class="row">
+                    <div class="col-md-12">
+					<section class="single-title-section">
+<?php  if (have_posts()) : while (have_posts()) : the_post(); 
+get_template_part('post-template/post-meta-top');  endwhile; endif; ?></section></div></div></div></div>
+<?php } ?>
+    <div class="container">
+	 <div class="spacer"></div>
+                 <div class="row">
+               <?php if ($sidebarpost=='1col') { ?>
+			   <div class="col-md-12" id="content">
+                        <?php get_template_part("loop/loop-single"); ?>
+                    </div>
+					<?php }else{ ?>
+                    <div class="<?php if ($sidebarpost=='2cr' or $sidebarpost==''){echo 'col-xs-12 col-sm-8 col-md-8';}elseif ($sidebarpost=='2cl'){echo 'col-xs-12 col-sm-8 col-sm-push-4 col-md-8 col-md-push-4';} ?>" id="content">
+                        <?php get_template_part("loop/loop-single"); ?>
+                    </div>
+                    <div class="<?php if ($sidebarpost=='2cr' or $sidebarpost==''){echo 'col-xs-12 col-sm-4 col-md-4 sidebar';}elseif ($sidebarpost=='2cl'){echo 'col-xs-12 col-sm-4 col-sm-pull-8 col-md-4 col-md-pull-8 sidebar left';} ?>" id="sidebar">
+                        <?php dynamic_sidebar("hs_main_sidebar"); ?>
+                    </div>
+					<?php } ?>
+                </div>
+    </div>
+</div>
+<footer class="footer">
+<?php get_template_part('wrapper/wrapper-footer'); ?>
+</footer>
+<?php get_footer(); ?>
+

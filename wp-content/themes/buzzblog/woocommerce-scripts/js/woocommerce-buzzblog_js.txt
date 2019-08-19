@@ -1,0 +1,31 @@
+(function($){
+	"use strict";
+
+	function get_cart() {
+		$.post({
+			url: wc_add_to_cart_params.ajax_url,
+			dataType: 'JSON',
+			data: {action: 'woomenucart_ajax'},
+			success: function(data, textStatus, XMLHttpRequest) {
+				$('.buzzblog-submenu-cart').html(data.cart);
+				if (data != '') {
+					if ($('.buzzblog-cart .badge, .mobile-shopping-cart .badge').length) {
+						if (data.articles > 0) {
+							$('.buzzblog-cart .badge, .mobile-shopping-cart .badge').html(data.articles);
+							$('.buzzblog-cart .badge, .mobile-shopping-cart .badge').show();
+						} else {
+							$('.buzzblog-cart .badge, .mobile-shopping-cart .badge').hide();
+						}
+					} else $('.buzzblog-cart .cart-icon-container').append('<span class="badge">'+data.articles+'</span>');
+				}
+			}
+		});
+	}
+
+	$(document).ready(function() {
+		$('body').bind("product_remove", get_cart);
+		$('body').bind("added_to_cart", get_cart);
+		$('body').bind("wc_fragments_refreshed", get_cart);
+	});
+
+})(jQuery);

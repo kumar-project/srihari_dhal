@@ -1,0 +1,65 @@
+<?php get_header(); ?>
+<div class="content-holder clearfix">
+	<div class="container">
+<?php get_template_part('title'); ?>
+				<?php if ( is_active_sidebar( 'hs_under_header' ) ) : ?>
+
+				<div class="row">
+				<div class="col-md-12">
+				<?php dynamic_sidebar("hs_under_header"); ?>
+				</div>
+				</div>
+				
+				<?php endif; ?>
+                <div class="row">
+ 				<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='right' or buzzblog_getVariable('blog_cat_sidebar_pos')=='') { ?>   
+                    <div class="col-md-8" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+                        <?php get_template_part("loop/loop-blog-main"); ?>
+                    </div>
+                 <div class="col-md-4 sidebar" id="sidebar">
+                        <?php dynamic_sidebar("hs_main_sidebar"); ?>
+                    </div>
+					<?php } ?> 
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='left') { ?>   
+                    <div class="col-md-8 col-md-push-4 " id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+                        <?php get_template_part("loop/loop-blog-main"); ?>
+                    </div>
+                 <div class="col-md-4 col-md-pull-8 sidebar left" id="sidebar">
+                        <?php dynamic_sidebar("hs_main_sidebar"); ?>
+                    </div>
+					<?php } ?> 
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='full') { ?>   
+                    <div class="col-md-12" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+                        <?php get_template_part("loop/loop-blog-main"); ?>
+                    </div>
+					<?php } ?> 
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='masonry2') { ?>   
+                    <div class="col-md-12" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+                        <?php get_template_part("loop/loop-cat-blog2"); ?>
+                    </div>
+					<?php } ?> 					
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='masonry3') { ?>   
+                    <div class="col-md-12" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+                        <?php get_template_part("loop/loop-cat-blog3"); ?>
+                    </div>
+					<?php } ?> 
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='masonry4') { ?>   
+                    <div class="col-md-12" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+                        <?php get_template_part("loop/loop-cat-blog4"); ?>
+                    </div>
+					<?php } ?>
+
+                      </div>
+               
+    </div>
+</div>
+<footer class="footer">
+<?php get_template_part('wrapper/wrapper-footer'); ?>
+</footer>
+<?php get_footer(); ?>

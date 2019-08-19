@@ -1,0 +1,6 @@
+<?php /* Loop Name: Loop portfolio 3 */ ?>
+<?php // Theme Options vars
+wp_enqueue_script('masonry');
+$cols = '3cols';
+$feautered = '';
+require get_template_directory() . '/blog-category-masonry-loop.php';

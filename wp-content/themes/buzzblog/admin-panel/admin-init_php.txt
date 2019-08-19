@@ -1,0 +1,32 @@
+<?php
+if ( !class_exists( 'ReduxFramework' ) && file_exists( get_template_directory() . '/admin-panel/redux-framework/framework.php' ) ) {
+    require_once( get_template_directory() . '/admin-panel/redux-framework/framework.php' );
+}
+    // Load the theme/plugin options
+    if ( file_exists( get_template_directory() . '/admin-panel/options-init.php' ) ) {
+        require_once get_template_directory() . '/admin-panel/options-init.php';
+    }
+function buzzblog_removeDemoModeLink() { // Be sure to rename this function to something more unique
+    if ( class_exists('ReduxFrameworkPlugin') ) {
+        remove_filter( 'plugin_row_meta', array( ReduxFrameworkPlugin::get_instance(), 'plugin_metalinks'), null, 2 );
+    }
+    if ( class_exists('ReduxFrameworkPlugin') ) {
+        remove_action('admin_notices', array( ReduxFrameworkPlugin::get_instance(), 'admin_notices' ) );    
+		add_action( 'admin_menu', 'buzzblog_remove_redux_menu',12 );
+function buzzblog_remove_redux_menu() {
+    remove_submenu_page('tools.php','redux-about');
+}
+    }
+}
+add_action('init', 'buzzblog_removeDemoModeLink');
+function buzzblog_addPanelCSS() {
+wp_register_style( 'redux-custom-css', trailingslashit(get_template_directory_uri()) . 'admin-panel/redux-style.css', array( 'redux-admin-css' ), '1.0', 'all' );	
+wp_enqueue_style('redux-custom-css');
+}
+add_action( 'redux/page/buzzblog_options/enqueue', 'buzzblog_addPanelCSS' );
+
+add_action('admin_init', 'buzzblog_override_redux_message', 30);
+
+function buzzblog_override_redux_message() {
+    update_option( 'ReduxFrameworkPlugin_ACTIVATED_NOTICES', '');
+}

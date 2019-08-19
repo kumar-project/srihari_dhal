@@ -1,0 +1,16 @@
+<?php /* Loop Name: Loop blog */ ?>
+<div class="ajax-container"> 
+<?php 
+	 if (have_posts()) : while (have_posts()) : the_post(); ?>
+	 <div class="ajax-post-wrapper" >
+  <?php get_template_part('content'); 	
+		
+		if (buzzblog_getVariable('related_post') !='no' and buzzblog_getVariable('related_post_single') !='yes') { get_template_part( 'post-template/related-posts' ); }	?>
+</div>
+<?php
+		endwhile; else:
+
+		get_template_part( 'content', 'none' );
+	 
+	 endif; ?>
+</div>

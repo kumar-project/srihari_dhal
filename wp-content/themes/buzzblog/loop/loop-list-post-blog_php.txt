@@ -1,0 +1,40 @@
+<?php /* Loop Name: Loop list-posts blog */ ?>
+<?php 
+$blog_list_special_post = buzzblog_getVariable('blog_list_special_post');
+	if ( get_query_var('paged') ) {
+		$paged = get_query_var('paged');
+	} elseif ( get_query_var('page') ) {
+		$paged = get_query_var('page');
+	} else {
+		$paged = 1;
+	}
+
+$args = array( 'post_type' => 'post', 'paged' => $paged //'posts_per_page' => $blog_popular_post_per_page, 
+);
+$counter = 1;
+$loop = new WP_Query( $args );
+
+	 if ($loop->have_posts()) : 
+	 while ($loop->have_posts()) : $loop->the_post();
+	 ?>
+<?php if ($counter % 3 == 0 && $blog_list_special_post == 'yes') { ?>
+<div class="block col-xs-12 col-md-12 ajax-post-wrapper" >
+
+<?php get_template_part('content'); ?>
+	
+</div>
+<?php }else{ ?>
+<div id="post-<?php the_ID(); ?>" class="block col-xs-12 col-md-12 ajax-post-wrapper" > 
+
+<?php get_template_part('post-template/list-post-template'); ?>
+	
+</div>
+<?php } ?>
+<?php $counter ++ ; 
+		endwhile; wp_reset_postdata(); ?>
+
+		<?php else: ?>
+		
+<?php get_template_part( 'content', 'none' ); ?>
+
+<?php endif; ?>

@@ -1,0 +1,42 @@
+<?php /* Loop Name: Loop single */ ?>
+<?php if (have_posts()) : while (have_posts()) : the_post();         
+      
+get_template_part('content-gallery');
+
+?>
+					
+				<div class="row paging">
+				
+	<div class="col-sm-6 col-md-6 col-lg-6">
+		
+		<?php 
+		
+		$prev_post = get_adjacent_post(false, '', true);
+		
+		if ( $prev_post ) {
+if(!empty($prev_post)) {
+echo '<a href="' . get_permalink($prev_post->ID) . '" title="' . $prev_post->post_title . '"><div class="direct-link-left"><p>'. theme_locals("previousimage") . '</p><span>' . $prev_post->post_title . '</span></div></a>'; } 
+}
+?>
+		
+		</div>
+	
+	<div class="col-sm-6 col-md-6 col-lg-6">
+		<?php 
+		
+		$next_post = get_adjacent_post(false, '', false);
+		
+		if ( $next_post ) {
+if(!empty($next_post)) {
+echo '<a href="' . get_permalink($next_post->ID) . '" title="' . $next_post->post_title . '"><div class="direct-link-right"><p>' . theme_locals("nextimage") . '</p><span>'  . $next_post->post_title . '</span></div></a>'; } 
+}
+?>
+	</div>
+	
+	<div class="clear"></div>
+</div> 
+
+			<?php comments_template('', true); ?>
+<?php
+	endwhile; endif; 
+?>

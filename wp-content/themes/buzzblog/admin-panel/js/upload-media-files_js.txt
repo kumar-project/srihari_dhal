@@ -1,0 +1,14 @@
+jQuery(document).ready(function() {
+    jQuery('.upload_image_button').live('click', function () {
+        var hercules_uploader,
+            button = jQuery(this);
+        hercules_uploader = wp.media.frames.file_frame = wp.media({
+            multiple: false
+        });
+        hercules_uploader.on('select', function() {
+            var attachment = hercules_uploader.state().get('selection').first().toJSON();
+            button.prev('input[type="text"]').val(attachment.url)
+        }).open();
+        return !1;
+    });
+});

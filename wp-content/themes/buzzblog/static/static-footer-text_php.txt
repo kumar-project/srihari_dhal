@@ -1,0 +1,7 @@
+<?php /* Static Name: Footer text */ ?>
+<div id="footer-text" class="footer-text">
+	<?php $hs_footer_text = buzzblog_getVariable('footer_text'); ?>
+	<?php if($hs_footer_text){?>
+		<?php echo buzzblog_getVariable('footer_text'); ?>
+	<?php } ?>
+</div>

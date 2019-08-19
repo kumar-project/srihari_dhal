@@ -1,0 +1,91 @@
+<article id="post-<?php the_ID(); ?>" <?php post_class('post__holder'); ?>>
+<?php buzzblog_formaticons(); ?>
+	<div class="row">
+	<div class="col-md-12">
+
+	<?php /* Top meta */ ?>
+	<?php get_template_part('post-template/post-meta-top');  ?>
+<?php /* Top meta */ ?>
+
+<?php $blog_sidebar_pos = buzzblog_getVariable('blog_sidebar_pos');
+
+ ?>
+						
+	<!-- Post Content -->
+	<div class="post_content">
+		<?php if((has_post_format('gallery') && $blog_sidebar_pos != 'masonry2') or (has_post_format('gallery') && $blog_sidebar_pos != 'masonry2sideleft') or (has_post_format('gallery') && $blog_sidebar_pos != 'masonry2sideright') or (has_post_format('gallery') && $blog_sidebar_pos != 'masonry3') or (has_post_format('gallery') && $blog_sidebar_pos != 'masonry4')) : ?>
+	<?php get_template_part('post-template/gallery');  ?>
+	<?php elseif(has_post_format('audio')) : ?>
+	<?php get_template_part('post-template/audio');  ?>
+	<?php elseif(has_post_format('video')) : ?>
+	<?php get_template_part('post-template/video');  ?>
+	<?php elseif(has_post_format( array('quote','link'))) : ?>
+	<?php ?>
+	<?php else : ?>
+	<?php get_template_part('post-template/post-thumb'); ?>
+	<?php endif; ?>
+	<?php 
+	$full_content = buzzblog_getVariable( 'full_content' );  
+	if(!is_singular() && $full_content!='yes') : ?>
+	<?php if(!has_post_format( array('quote','link'))){ ?>
+	<div class="isopad">
+		<?php $post_excerpt = buzzblog_getVariable( 'post_excerpt' );    
+		 if ($post_excerpt=='yes') { ?>		
+			<div class="excerpt">
+<?php apply_filters('the_content', ''); ?>			
+			<?php the_excerpt(); ?>			
+			</div>
+		<?php } else if ($post_excerpt=='') {
+				the_content();
+		        wp_link_pages('before=<div class="pagelink">&after=</div>'); ?>
+		
+		<?php } ?>
+				<?php $readmore_button = buzzblog_getVariable( 'readmore_button' ); 
+if ($readmore_button=='yes') { ?>
+<div class="clear"></div>
+				<div class="viewpost-button"><a class="button" href="<?php esc_url(the_permalink()) ?>"><span><?php echo theme_locals("continue_reading"); ?></span></a></div>
+		<div class="clear"></div>
+		<?php } ?>
+	</div>
+		<?php } ?>	
+		<?php if(has_post_format('quote')){ 
+		get_template_part('post-template/quote');
+		 } ?>
+		<?php if(has_post_format('link')){ 
+		get_template_part('post-template/link');
+		 } ?>			 
+	<?php else : ?>	
+	<!-- Post Content -->
+			<?php if(has_post_format('quote')){ 
+		get_template_part('post-template/quote');
+		 }elseif(has_post_format('link')){ 
+		get_template_part('post-template/link');
+		 }else{ ?>
+	<div class="isopad">
+		<?php the_content(); ?>
+		<?php wp_link_pages('before=<div class="pagelink">&after=</div>'); ?>
+		<div class="clear"></div>
+	</div>
+	<?php } ?>
+	<!-- //Post Content -->	
+	<?php endif; ?>
+<?php /* content */ ?>
+</div>
+	
+	
+	
+	
+</div></div>
+
+
+
+<!-- Meta and share buttons -->
+
+	<div class="meta-line">
+	<?php get_template_part( 'post-template/share-buttons' ); ?>
+	</div>
+
+<!-- //Meta and share buttons -->
+<?php  if(is_singular() && buzzblog_getVariable('post_author_box')!='no' && get_the_author_meta( 'description' ) ) {
+get_template_part('post-template/post-author'); } ?>
+</article>

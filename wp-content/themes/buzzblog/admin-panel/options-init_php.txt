@@ -1,0 +1,2596 @@
+<?php
+
+    /**
+     * For full documentation, please visit: http://docs.reduxframework.com/
+     * For a more extensive sample-config file, you may look at:
+     * https://github.com/reduxframework/redux-framework/blob/master/sample/sample-config.php
+     */
+
+    if ( ! class_exists( 'Redux' ) ) {
+        return;
+    }
+function buzzblog_OptionsPanel() {
+$GLOBALS['redux_notice_check'] = false;
+$GLOBALS['redux_update_check'] = false;
+    // This is your option name where all the Redux data is stored.
+    $opt_name = "buzzblog_options";
+
+    /**
+     * ---> SET ARGUMENTS
+     * All the possible arguments for Redux.
+     * For full documentation on arguments, please refer to: https://github.com/ReduxFramework/ReduxFramework/wiki/Arguments
+     * */
+$buzzblog_os_faces = array(
+		"Arial, Helvetica, sans-serif"                         => "Arial, Helvetica, sans-serif",
+            "'Arial Black', Gadget, sans-serif"                    => "'Arial Black', Gadget, sans-serif",
+            "'Bookman Old Style', serif"                           => "'Bookman Old Style', serif",
+            "'Comic Sans MS', cursive"                             => "'Comic Sans MS', cursive",
+            "Courier, monospace"                                   => "Courier, monospace",
+            "Garamond, serif"                                      => "Garamond, serif",
+            "Georgia, serif"                                       => "Georgia, serif",
+            "Impact, Charcoal, sans-serif"                         => "Impact, Charcoal, sans-serif",
+            "'Lucida Console', Monaco, monospace"                  => "'Lucida Console', Monaco, monospace",
+            "'Lucida Sans Unicode', 'Lucida Grande', sans-serif"   => "'Lucida Sans Unicode', 'Lucida Grande', sans-serif",
+            "'MS Sans Serif', Geneva, sans-serif"                  => "'MS Sans Serif', Geneva, sans-serif",
+            "'MS Serif', 'New York', sans-serif"                   => "'MS Serif', 'New York', sans-serif",
+            "'Palatino Linotype', 'Book Antiqua', Palatino, serif" => "'Palatino Linotype', 'Book Antiqua', Palatino, serif",
+            "Tahoma,Geneva, sans-serif"                            => "Tahoma, Geneva, sans-serif",
+            "'Times New Roman', Times,serif"                       => "'Times New Roman', Times, serif",
+            "'Trebuchet MS', Helvetica, sans-serif"                => "'Trebuchet MS', Helvetica, sans-serif",
+            "Verdana, Geneva, sans-serif"                          => "Verdana, Geneva, sans-serif",
+	);
+	//if (of_get_option("custom_font_family_name")) :
+	$customfonths = 'Palatino';
+	$buzzblog_os_faces[$customfonths] = $customfonths;
+	//endif;
+    $theme = wp_get_theme(); // For use with some settings. Not necessary.
+
+    $args = array(
+        'opt_name' => 'buzzblog_options',
+        'use_cdn' => true,
+        'display_name' => 'BuzzBlog',
+		'display_version' => 'version '.$theme->get('Version'),
+        'page_title' => 'BuzzBlog',
+        'update_notice' => false,
+		'dev_mode' => false,
+		'footer_credit'             => '<span id="footer-thankyou">' . esc_html__( 'HerculesDesign Options Panel', 'buzzblog' ) . '</span>',
+        'menu_type' => 'submenu',
+        'menu_title' => 'Theme Options',
+        'allow_sub_menu' => TRUE,
+        'page_parent' => 'themes.php',
+        'page_parent_post_type' => 'your_post_type',
+        'customizer' => TRUE,
+        'default_mark' => '',
+		'google_update_weekly' => TRUE,
+		'disable_tracking' => TRUE,
+		'disable_save_warn' => TRUE,
+        'google_api_key' => 'AIzaSyC_f_n9BpSQiBbwaJt_0lN1Ynk8tObUiUU',
+        'class' => 'hercules',
+        'hints' => array(
+            'icon_position' => 'right',
+            'icon_size' => 'normal',
+            'tip_style' => array(
+                'color' => 'light',
+            ),
+            'tip_position' => array(
+                'my' => 'top left',
+                'at' => 'bottom right',
+            ),
+            'tip_effect' => array(
+                'show' => array(
+                    'duration' => '500',
+                    'event' => 'mouseover',
+                ),
+                'hide' => array(
+                    'duration' => '500',
+                    'event' => 'mouseleave unfocus',
+                ),
+            ),
+        ),
+        'output' => TRUE,
+        'output_tag' => TRUE,
+        'settings_api' => TRUE,
+        'cdn_check_time' => '1440',
+        'compiler' => TRUE,
+        'page_permissions' => 'manage_options',
+        'save_defaults' => TRUE,
+        'show_import_export' => TRUE,
+        'database' => 'options',
+        'transient_time' => '3600',
+        'network_sites' => false,
+    );
+
+
+
+    Redux::setArgs( $opt_name, $args );
+
+    /*
+     * ---> END ARGUMENTS
+     */
+
+    /*
+     *
+     * ---> START SECTIONS
+     *
+     */
+
+    Redux::setSection( $opt_name, array(
+        'title'  => esc_html__( 'General settings', 'buzzblog' ),
+        'id'     => 'basic',
+        'icon'   => 'el el-home',
+        'fields' => array(
+
+array(
+                'id'            => 'hs_container_size',
+                'type'          => 'slider',
+                'title'         => esc_html__( 'Main container width', 'buzzblog' ),
+                'subtitle'      => esc_html__( 'Choose the width of the website', 'buzzblog' ),
+                'desc'          => esc_html__( 'Min: 900, max: 1170, step: 1, default value: 1170', 'buzzblog' ),
+                'default'       => 1170,
+                'min'           => 900,
+                'step'          => 1,
+                'max'           => 1170,
+                'display_value' => 'text'
+            ),
+						            array(
+                'id'       => 'main_layout',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Layout', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the layout', 'buzzblog' ),
+                'options'  => array(
+                    'wide' => esc_html__( 'Wide', 'buzzblog' ), 
+                    'boxed' => esc_html__( 'Boxed', 'buzzblog' ) 
+                ),
+                'default'  => 'wide'
+            ),
+array(
+                'id'       => 'body_background',
+                'type'     => 'background',
+                'title'    => esc_html__( 'Body styling', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the background style.', 'buzzblog' ),
+                'default'  => array(
+        'background-color' => '#ffffff',
+				'background-image' => '/wp-content/uploads/sites/3/2016/11/pattern1.png',
+		'background-repeat' => 'repeat'
+    )
+            ),
+array(
+                'id'       => 'hs_bodytext',
+                'type'     => 'typography',
+                'title'    => esc_html__( 'Body Text', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your prefered font for body text.', 'buzzblog' ),
+				'output'      => array( '.main-holder, .buzzblog-cookie-banner-wrap, .mfp-wrap, .social_label, .sidepanel' ),
+                'google'   => true,
+				'fonts' => $buzzblog_os_faces,
+				'letter-spacing'=> true,
+                'default'  => array(
+                    'color'       => '#525252',
+                    'font-size'   => '16px',
+					'line-height'   => '31px',
+					'letter-spacing'   => '0px',
+                    'font-family' => 'Playfair Display',
+                    'font-weight' => '400',
+					'letter-spacing'=> '0px'
+                ),
+            ),
+array(
+                'id'          => 'h1_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'H1 Heading', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+                'output'      => array( 'h1' ),
+				'fonts' => $buzzblog_os_faces,
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for H1 heading and titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'inherit',
+                    'google'      => true,
+                    'font-size'   => '56px',
+                    'line-height' => '64px',
+					'letter-spacing'=> '-3px',
+					'text-transform'=> 'none'
+                ),
+            ),
+			array(
+                'id'          => 'h2_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'H2 Heading', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+                'output'      => array( 'h2' ),
+				'fonts' => $buzzblog_os_faces,
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for H2 heading and titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'inherit',
+                    'google'      => true,
+                    'font-size'   => '54px',
+                    'line-height' => '62px',
+					'letter-spacing'=> '-1px',
+					'text-transform'=> 'none'
+                ),
+            ),
+			array(
+                'id'          => 'h3_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'H3 Heading', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+                'output'      => array( 'h3' ),
+				'fonts' => $buzzblog_os_faces,
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for H3 heading and titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'inherit',
+                    'google'      => true,
+                    'font-size'   => '44px',
+                    'line-height' => '48px',
+					'letter-spacing'=> '0px',
+					'text-transform'=> 'none'
+                ),
+            ),
+			array(
+                'id'          => 'h4_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'H4 Heading', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+                'output'      => array( 'h4' ),
+				'fonts' => $buzzblog_os_faces,
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for H4 heading and titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'inherit',
+                    'google'      => true,
+                    'font-size'   => '26px',
+                    'line-height' => '28px',
+					'letter-spacing'=> '0px',
+					'text-transform'=> 'none'
+                ),
+            ),
+			array(
+                'id'          => 'h5_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'H5 Heading', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+                'output'      => array( 'h5' ),
+				'fonts' => $buzzblog_os_faces,
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for H5 heading and titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'inherit',
+                    'google'      => true,
+                    'font-size'   => '20px',
+                    'line-height' => '25px',
+					'letter-spacing'=> '0px',
+					'text-transform'=> 'none'
+                ),
+            ),
+			array(
+                'id'          => 'h6_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'H6 Heading', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+                'output'      => array( 'h6' ),
+				'fonts' => $buzzblog_os_faces,
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for H6 heading and titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'inherit',
+                    'google'      => true,
+                    'font-size'   => '15px',
+                    'line-height' => '22px',
+					'letter-spacing'=> '0px',
+					'text-transform'=> 'none'
+                ),
+            ),
+			array(
+                'id'          => 'h1_pagetitle',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'Page title', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+                'output'      => array( '.title-section h1' ),
+				'fonts' => $buzzblog_os_faces,
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for page titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'center',
+                    'google'      => true,
+                    'font-size'   => '68px',
+                    'line-height' => '75px',
+					'letter-spacing'=> '-3px'
+                ),
+            ),
+			array(
+                'id'          => 'h2_pagetitle',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'Page subtitle', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+                'output'      => array( '.title-section h2' ),
+				'fonts' => $buzzblog_os_faces,
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for page subtitle.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+					'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'center',
+					'text-transform'=> 'inherit',
+                    'google'      => true,
+                    'font-size'   => '30px',
+                    'line-height' => '36px',
+					'letter-spacing'=> '0px'
+                ),
+            ),
+		array(
+                'id'       => 'page_sidebar_pos',
+                'type'     => 'image_select',
+                'title'    => esc_html__( 'Default page layout', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your default page layout.', 'buzzblog' ),
+                'options'  => array(
+                    'left' => array( 'title' => 'left sidebar', 'img' => get_template_directory_uri() . '/includes/images/2cl.png' ),
+                    'right' => array( 'title' => 'right sidebar', 'img' => get_template_directory_uri() . '/includes/images/2cr.png' ),
+                    'full' => array( 'title' => 'no sidebar', 'img' => get_template_directory_uri() . '/includes/images/1col.png' )
+                ),
+                'default'  => 'right'
+            ),
+        )
+    ) );
+
+    Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Header styling', 'buzzblog' ),
+        'id'         => 'hs-header-styling',
+		'icon'   => 'el el-brush',
+        'fields'     => array(
+            		array(
+                'id'       => 'header_layout',
+                'type'     => 'image_select',
+                'title'    => esc_html__( 'Header layout', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose a layout for heaader area.', 'buzzblog' ),
+                'options'  => array(
+                    'center' => array( 'title' => 'center', 'img' => get_template_directory_uri() . '/includes/images/headercenter.png' ),
+                    'topcenter' => array( 'title' => 'topcenter', 'img' => get_template_directory_uri() . '/includes/images/headertopcenter.png' ),
+                    'topleftmenu' => array( 'title' => 'topleftmenu', 'img' => get_template_directory_uri() . '/includes/images/headertopmenuleft.png' ),
+					'left' => array( 'title' => 'left', 'img' => get_template_directory_uri() . '/includes/images/headerleft.png' ),
+					'leftad' => array( 'title' => 'leftad', 'img' => get_template_directory_uri() . '/includes/images/headerad.png' )
+                ),
+                'default'  => 'center'
+            ),
+			array(
+                'id'       => 'header_image',
+                'type'     => 'background',
+                'title'    => esc_html__( 'Header background image', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the header background image.', 'buzzblog' ),
+				'output'   => array( '.headerstyler' ),
+                'default'  => array(
+        'background-color' => '#ffffff',
+    )
+            ),
+			            array(
+                'id'       => 'overlay_color',
+                'type'     => 'color_rgba',
+                'title'    => esc_html__( 'Header overlay', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the header overlay color.', 'buzzblog' ),
+                'default'  => array(
+                    'color' => '#ffffff',
+                    'alpha' => '0.6'
+                ),
+                'mode'     => 'background',
+            ),
+			            array(
+                'id'            => 'header_background_ratio',
+                'type'          => 'slider',
+                'title'         => esc_html__( 'Header background ratio', 'buzzblog' ),
+                'subtitle'      => esc_html__( 'Change the header background ratio.', 'buzzblog' ),
+                'desc'          => esc_html__( 'Min: 0, max: 2, step: .1, default value: .5', 'buzzblog' ),
+                'default'       => .5,
+                'min'           => 0,
+                'step'          => .1,
+                'max'           => 2,
+                'resolution'    => 0.1,
+                'display_value' => 'text'
+            ),
+			            array(
+                'id'            => 'header_vertical_offset',
+                'type'          => 'slider',
+                'title'         => esc_html__( 'Header vertical offset', 'buzzblog' ),
+                'subtitle'      => esc_html__( 'Change the header vertical offset.', 'buzzblog' ),
+                'desc'          => esc_html__( 'Min: -500, max: 500, step: 1, default value: 0', 'buzzblog' ),
+                'default'       => 0,
+                'min'           => -500,
+                'step'          => 1,
+                'max'           => 500,
+                'display_value' => 'text'
+            ),
+			array(
+                'id'       => 'top_menu_typography',
+                'type'     => 'typography',
+                'title'    => esc_html__( 'Top Menu Typography', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your preferred font for top menu.', 'buzzblog' ),
+                'google'   => true,
+				'fonts' => $buzzblog_os_faces,
+				'color'       => false,
+				'line-height'   => false,
+				'letter-spacing'=> true,
+				'text-transform'=> true,
+				'output'      => array( '#top-menu a' ),
+                'default'  => array(
+                    'font-size'   => '13px',
+					'letter-spacing'   => '0px',
+                    'font-family' => 'Playfair Display',
+                    'font-weight' => '400',
+					'text-transform'=> 'uppercase'
+                ),
+            ),
+					            array(
+                'id'       => 'top-container-menu-link-color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Top menu link color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the top menu link color.', 'buzzblog' ),
+				'output'   => array( '#top-menu a' ),
+                'default'  => array(
+				    'regular' => '#000000',
+                    'hover'   => '#efa48d',
+                    'active'  => '#efa48d',
+                )
+            ),
+								            array(
+                'id'       => 'top-container-submenu-link-color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Top menu sub menu link color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the top menu, sub menu links color.', 'buzzblog' ),
+				'output'   => array( '#top-menu ul a, #top-menu .current_page_item ul a, #top-menu ul .current_page_item a, #top-menu .current-menu-item ul a, #top-menu ul .current-menu-item a, #top-menu li:hover > ul a' ),
+                'default'  => array(
+				    'regular' => '#ffffff',
+                    'hover'   => '#efdcd7',
+                    'active'  => '#efdcd7',
+                )
+            ),
+			
+									            array(
+                'id'       => 'topmenu_submenu_bg_color',
+                'type'     => 'color_rgba',
+                'title'    => esc_html__( 'Top menu dropdown background color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the top menu dropdown background color.', 'buzzblog' ),
+                'default'  => array(
+                    'color' => '#efa48d',
+                    'alpha' => 0.99
+                ),
+                'mode'     => 'background',
+            ),
+			
+								            array(
+                'id'       => 'topmenu_submenu_button_border_bottom_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Top menu dropdown button border-bottom color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the top menu dropdown button border-bottom color.', 'buzzblog' ),
+                'default'  => '#efd6cb',
+                'validate' => 'color',
+            ),
+									            array(
+                'id'       => 'top-container-links_color',
+                'type'     => 'link_color',
+				'output'   => array( '.top-container a' ),
+                'title'    => esc_html__( 'Top container links color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the top container links color.', 'buzzblog' ),
+				'active'   => false,
+                'default'  => array(
+                    'regular' => '#000000',
+                    'hover'   => '#dddddd',
+                )
+            ),
+						         array(
+                'id'       => 'top_container_bg_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Top container background color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the top container dropdown background color.', 'buzzblog' ),
+                'default'  => '#ffffff',
+                'validate' => 'color',
+            ),
+						array( 
+    'id'       => 'top_container_border_color',
+    'type'     => 'border',
+    'title'    => esc_html__( 'Top container border color', 'buzzblog' ),
+    'subtitle' => esc_html__( 'Change the top container bottom border color.', 'buzzblog' ),
+	        'top'    => false, 
+        'right'  => false, 
+        'left'   => false,
+		'bottom'   => true,
+		'all' => false,
+    'output'   => array('.top-border'),
+    'default'  => array(
+        'border-color'  => '#eeeeee', 
+        'border-style'  => 'solid', 
+        'border-bottom' => '1px'
+    )
+	),
+        )
+    ) );
+
+    Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Theme styles', 'buzzblog' ),
+        'id'         => 'hs-theme-styles',
+		'icon'   => 'el el-adjust-alt',
+        'fields'     => array(
+            array(
+                'id'       => 'global_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Accent color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the accent color.', 'buzzblog' ),
+                'default'  => '#efa48d',
+            ),
+			            array(
+                'id'       => 'links_color',
+                'type'     => 'link_color',
+				'output'   => array( 'a' ),
+                'title'    => esc_html__( 'Links color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the links color.', 'buzzblog' ),
+				'active'   => false,
+                'default'  => array(
+                    'regular' => '#efa48d',
+                    'hover'   => '#dddddd',
+                )
+            ),
+			 array(
+                'id'       => 'buttons_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Buttons color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the buttons color.', 'buzzblog' ),
+				'output'   => array( '.footer .instagram-footer .readmore-button a, a.btn, a.comment-reply-link, input[type="submit"], .tagcloud a, .category-filter ul li a, .woocommerce #review_form #respond .form-submit input, .woocommerce .widget_price_filter .price_slider_amount .button, .woocommerce div.product form.cart .button, .woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button' ),
+				'active'   => false,
+                'default'  => array(
+                    'regular' => '#efa48d',
+                    'hover'   => '#ffffff',
+                )
+            ),
+			array(
+                'id'       => 'buttons_border_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Buttons border color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the buttons border color.', 'buzzblog' ),
+				'active'   => false,
+                'default'  => array(
+                    'regular' => '#efa48d',
+                    'hover'   => '#efa48d',
+                )
+            ),
+			array(
+                'id'       => 'buttons_background_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Buttons background color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the background color.', 'buzzblog' ),
+				'active'   => false,
+                'default'  => array(
+                    'regular' => '#ffffff',
+                    'hover'   => '#efa48d',
+                )
+            ),
+																																 array(
+                'id'       => 'content_around_shadow',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Shadow around the content.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display shadow around the content?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+			            array(
+                'id'       => 'custom_css',
+                'type'     => 'ace_editor',
+                'title'    => esc_html__( 'Custom CSS code', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Want to add any custom CSS code? Put in here, and the rest is taken care of.', 'buzzblog' ),
+                'mode'     => 'css',
+                'theme'    => 'chrome',
+                'default'  => ".someclass{\n   margin: 0 auto;\n}"
+            ),
+
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Logo', 'buzzblog' ),
+        'id'         => 'hs-logo-favicon',
+		'icon'   => 'el el-tag',
+        'fields'     => array(
+            array(
+                'id'             => 'logo_margin',
+                'type'           => 'spacing',
+                'mode'           => 'margin',
+                'all'            => false,
+				'output'      => array( '.logo' ),
+                //'top'           => false,     // Disable the top
+                'right'         => false,     // Disable the right
+                //'bottom'        => false,     // Disable the bottom
+                'left'          => false,     // Disable the left
+                'units'          => array( 'em', 'px', '%' ),      // You can specify a unit value. Possible: px, em, %
+                'units_extended' => 'true',    // Allow users to select any type of unit
+                //'display_units' => 'false',   // Set to false to hide the units if the units are specified
+                'title'          => esc_html__( 'Logo margin', 'buzzblog' ),
+                'subtitle'       => esc_html__( 'Enter the top and bottom margin value.', 'buzzblog' ),
+                'default'        => array(
+                    'margin-top'    => '40px',
+                    'margin-bottom' => '40px',
+                )
+            ),
+		   array(
+                'id'       => 'logo_type',
+                'type'     => 'switch',
+                'title'    => esc_html__( 'What kind of logo?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Select whether you want your main logo to be an image or text. If you select "image" you can put in the image url in the next option, and if you select "text" your Site Title will be shown instead.', 'buzzblog' ),
+                'default'  => 0,
+                'on'       => 'Image Logo',
+                'off'      => 'Text Logo',
+            ),
+array(
+                'id'       => 'logo_typography',
+                'type'     => 'typography',
+				'required' => array( 'logo_type', '=', '0' ),
+                'title'    => esc_html__( 'Logo Typography', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your preferred font for logo.', 'buzzblog' ),
+                'google'   => true,
+				'fonts' => $buzzblog_os_faces,
+				'letter-spacing'=> true,
+				'output'      => array( '.logo_h__txt, .logo_link' ),
+                'default'  => array(
+                    'color'       => '#000000',
+                    'font-size'   => '73px',
+					'line-height'   => '76px',
+					'letter-spacing'   => '-1px',
+                    'font-family' => 'Playfair Display',
+                    'font-weight' => '400',
+                ),
+            ),
+            array(
+                'id'       => 'logo_hover_color',
+                'type'     => 'link_color',
+				'required' => array( 'logo_type', '=', '0' ),
+                'title'    => esc_html__( 'Logo hover color', 'buzzblog' ), 
+                'subtitle' => esc_html__( 'Change the logo hover color.', 'buzzblog' ),
+				'output'      => array( '.logo_h a:hover, .logo_h a' ),
+                'regular'   => false,
+                'default'  => array(
+                    'hover'   => '#000000',
+                    'active'  => '#000000',
+                )
+            ),
+		array(
+                'id'       => 'logo_url',
+                'type'     => 'media',
+				'required' => array( 'logo_type', '=', '1' ),
+                'url'      => true,
+                'title'    => esc_html__( 'Header Logo Image Path', 'buzzblog' ),
+                'compiler' => 'true',
+                'subtitle' => esc_html__( 'Click Upload or Enter the direct path to your logo image.', 'buzzblog' ),
+                'default'  => array( 'url' => '' ),
+            ),
+							  array(
+                'id'       => 'header_logo_width',
+                'type'     => 'text',
+				'required' => array( 'logo_type', '=', '1' ),
+                'title'    => esc_html__( 'Header logo width.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Set the width of the header logo. If you want a logo that is 100px wide to look sharp on a Retina display, upload image twice as big to begin with, which means 200px and enter 100 in this field.', 'buzzblog' ),
+                'default'  => '400',
+            ),
+				array(
+                'id'       => 'footer_logo_url',
+                'type'     => 'media',
+				'required' => array( 'logo_type', '=', '1' ),
+                'url'      => true,
+                'title'    => esc_html__( 'Footer Logo Image Path', 'buzzblog' ),
+                'compiler' => 'true',
+                'subtitle' => esc_html__( 'Click Upload or Enter the direct path to your logo image.', 'buzzblog' ),
+                'default'  => array( 'url' => '' ),
+            ),
+										  array(
+                'id'       => 'footer_logo_width',
+                'type'     => 'text',
+				'required' => array( 'logo_type', '=', '1' ),
+                'title'    => esc_html__( 'Footer logo width.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Set the width of the footer logo. If you want a logo that is 100px wide to look sharp on a Retina display, upload image twice as big to begin with, which means 200px and enter 100 in this field.', 'buzzblog' ),
+                'default'  => '400',
+            ),
+			array(
+                'id'       => 'sidepanel_logo_url',
+                'type'     => 'media',
+				'required' => array( 'logo_type', '=', '1' ),
+                'url'      => true,
+                'title'    => esc_html__( 'Side Panel Logo Image Path', 'buzzblog' ),
+                'compiler' => 'true',
+                'subtitle' => esc_html__( 'Click Upload or Enter the direct path to your logo image.', 'buzzblog' ),
+                'default'  => array( 'url' => '' ),
+            ),
+							array(
+                'id'       => 'logo_sidepanel',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display logo in sidepanel?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display logo in sidepanel?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+				array(
+                'id'       => 'logo_tagline',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display logo tagline?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display tagline under the logo?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+			
+			array(
+                'id'       => 'tagline_color',
+                'type'     => 'typography',
+                'title'    => esc_html__( 'Tagline typography', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your preferred font for tagline.', 'buzzblog' ),
+                'google'   => true,
+				'fonts' => $buzzblog_os_faces,
+				'letter-spacing'=> true,
+				'text-transform'=> true,
+				'output'      => array( '.logo_tagline' ),
+                'default'  => array(
+                    'color'       => '#000000',
+                    'font-size'   => '13px',
+					'line-height'   => '15px',
+					'letter-spacing'   => '3px',
+                    'font-family' => 'Playfair Display',
+                    'font-weight' => '400',
+					'text-transform'=> 'uppercase'
+                ),
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Navigation', 'buzzblog' ),
+        'id'         => 'hs-navigation',
+		'icon'   => 'el el-align-justify',
+        'fields'     => array(
+			            array(
+                'id'       => 'header_position',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Menu type', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the main menu type (normal or sticky)', 'buzzblog' ),
+                'options'  => array(
+                    'stickyheader' => esc_html__( 'Sticky', 'buzzblog' ), 
+                    'normalheader' => esc_html__( 'Normal', 'buzzblog' ) 
+                ),
+                'default'  => 'stickyheader'
+            ),
+														            array(
+                'id'       => 'hamburger_menu',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Side panel', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to the show side panel only on mobile ?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+						array(
+                'id'       => 'side_panel_typography',
+                'type'     => 'typography',
+                'title'    => esc_html__( 'Side Panel Typography', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your preferred font for Side Panel.', 'buzzblog' ),
+                'google'   => true,
+				'fonts' => $buzzblog_os_faces,
+				'color'       => false,
+				'letter-spacing'=> true,
+				'text-transform'=> true,
+				'output'      => array( '.menu-mobile ul li a' ),
+                'default'  => array(
+                    'font-size'   => '13px',
+					'line-height'   => '20px',
+					'letter-spacing'   => '0px',
+                    'font-family' => 'Playfair Display',
+                    'font-weight' => '400',
+					'text-transform'=> 'none'
+                ),
+            ),
+					            array(
+                'id'       => 'side-panel-link-color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Side Panel links color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the Side Panel links color.', 'buzzblog' ),
+				'output'   => array( '.menu-mobile ul li a' ),
+                'default'  => array(
+				    'regular' => '#000000',
+                    'hover'   => '#efa48d',
+					'active'   => '#efa48d'
+                )
+            ),
+
+array(
+                'id'       => 'menu_typography',
+                'type'     => 'typography',
+                'title'    => esc_html__( 'Menu Typography', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your preferred font for menu.', 'buzzblog' ),
+                'google'   => true,
+				'fonts' => $buzzblog_os_faces,
+				'letter-spacing'=> true,
+				'text-transform'=> true,
+				'output'      => array( '#primary-menu > li > a' ),
+                'default'  => array(
+                    'color'       => '#000000',
+                    'font-size'   => '16px',
+					'line-height'   => '20px',
+					'letter-spacing'   => '0px',
+                    'font-family' => 'Playfair Display',
+                    'font-weight' => '400',
+					'text-transform'=> 'uppercase'
+                ),
+            ),
+            array(
+                'id'             => 'menu_items_padding',
+                'type'           => 'spacing',
+                'mode'           => 'padding',
+                'all'            => false,
+				'left' => true,
+				'output'      => array( '#primary-menu a' ),
+                'units'          => array( 'em', 'px', '%' ),
+                'title'          => esc_html__( 'Menu items padding', 'buzzblog' ),
+                'subtitle'       => esc_html__( 'Change the padding of the main menu items.', 'buzzblog' ),
+                'default'        => array(
+                    'padding-top'    => '26px',
+                    'padding-bottom' => '26px',
+					'padding-left' => '15px',
+					'padding-right' => '15px',
+					'units'          => 'px', 
+                )
+            ),
+array(
+                'id'       => 'dropdown_menu_typography',
+                'type'     => 'typography',
+                'title'    => esc_html__( 'Drop down menu typography', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your preferred font for drop down menu.', 'buzzblog' ),
+                'google'   => true,
+				'fonts' => $buzzblog_os_faces,
+				'letter-spacing'=> true,
+				'text-transform'=> true,
+				'output'      => array( '#primary-menu li ul li a, #primary-menu .has-mega-column > .sub-menu a' ),
+                'default'  => array(
+                    'color'       => '#525252', 
+                    'font-size'   => '13px',
+					'line-height'   => '20px',
+					'letter-spacing'   => '0px',
+					'text-align' => 'left',
+                    'font-family' => 'Playfair Display',
+                    'font-weight' => '400',
+					'text-transform'=> 'none'
+                ),
+            ),
+			array(
+                'id'       => 'dropdown_menu_column_heading',
+                'type'     => 'typography',
+                'title'    => esc_html__( 'Mega menu headings font', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your preferred font parameters for mega menu column headings.', 'buzzblog' ),
+                'google'   => false,
+				'font-family' => false,
+				'letter-spacing'=> true,
+				'text-transform'=> true,
+				'output'      => array( '#primary-menu .has-mega-column > .sub-menu > .columns-sub-item > a' ),
+                'default'  => array(
+                    'color'       => '#222222', 
+                    'font-size'   => '17px',
+					'line-height'   => '20px',
+					'letter-spacing'   => '0px',
+                    'font-weight' => '400',
+                ),
+            ),
+						            array(
+                'id'       => 'g_search_box_id',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display search icon?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display search icon in the main menu?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+            array(
+                'id'       => 'mainmenu_current_button_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Hover / active main menu link color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the color of the hover/active main menu link.', 'buzzblog' ),
+                'regular'   => false, // Disable Regular Color
+                'default'  => array(
+                    'hover'   => '#efa48d',
+                    'active'  => '#efa48d',
+                )
+            ),
+		            array(
+                'id'       => 'mainmenu_button_bg_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Main menu link background color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the color of the link background color', 'buzzblog' ),
+                'default'  => array(
+				    'regular' => '#ffffff',
+                    'hover'   => '#ffffff',
+                    'active'  => '#ffffff',
+                )
+            ),
+									            array(
+                'id'       => 'mainmenu_button_bg_color_transparent',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Main menu link background color transparency', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want Main menu link background color to be transparent? ', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+			            array(
+                'id'       => 'mainmenu_button_active_border_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Main menu active/hover link top border color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the main menu active/hover link top border color.', 'buzzblog' ),
+                'default'  => 'transparent',
+                'validate' => 'color',
+			
+            ),
+            array(
+                'id'       => 'mainmenu_submenu_bg_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Dropdown background color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the dropdown background color.', 'buzzblog' ),
+                'default'  => '#ffffff',
+                'validate' => 'color',
+            ),
+
+			array( 
+    'id'       => 'mainmenu_submenu_border_color',
+    'type'     => 'border',
+    'title'    => esc_html__( 'Dropdown border color and width', 'buzzblog' ),
+    'subtitle' => esc_html__( 'Change the dropdown border color and width.', 'buzzblog' ),
+		'all' => false,
+    'output'   => array('#primary-menu .has-mega-column > .sub-menu, #primary-menu .has-mega-sub-menu .mega-sub-menu, #primary-menu > li > ul, #primary-menu ul li:not(.buzzblog-widget-menu) > ul'),
+    'default'  => array(
+        'border-color'  => '#efa48d', 
+        'border-style'  => 'solid', 
+        'border-top'    => '2px', 
+        'border-right'  => '0px', 
+        'border-bottom' => '0px', 
+        'border-left'   => '0px'
+    )
+	),
+					            array(
+                'id'       => 'mainmenu_submenu_link_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Dropdown link color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the dropdown link color.', 'buzzblog' ),
+				'regular' => false,
+                'default'  => array(
+                    'hover'   => '#efa48d',
+                    'active'  => '#efa48d',
+                )
+            ),
+							            array(
+                'id'       => 'mainmenu_submenu_button_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Dropdown button background color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the dropdown background color.', 'buzzblog' ),
+                'default'  => array(
+				    'regular' => '#ffffff',
+                    'hover'   => '#ffffff',
+                    'active'  => '#ffffff',
+                )
+            ),
+			            array(
+                'id'       => 'mainmenu_submenu_button_border_bottom_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Dropdown button border-bottom color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the dropdown button border-bottom color.', 'buzzblog' ),
+                'default'  => '#eeeeee',
+                'validate' => 'color',
+            ),
+						            array(
+                'id'       => 'bgmenu_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'The main menu background Color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the background color of the main menu.', 'buzzblog' ),
+                'default'  => '#ffffff',
+                'validate' => 'color',
+            ),
+									            array(
+                'id'       => 'lineabove_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Color of the line above the main menu', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the color of the line above the main menu.', 'buzzblog' ),
+                'default'  => '#eeeeee',
+                'validate' => 'color',
+            ),
+						            array(
+                'id'            => 'lineabove_border_thick',
+                'type'          => 'slider',
+                'title'         => esc_html__( 'The thickness of the line above the main menu', 'buzzblog' ),
+                'subtitle'      => esc_html__( 'Change the thickness of the line above the main menu.', 'buzzblog' ),
+                'desc'          => esc_html__( 'Min: 0, max: 15, step: 1, default value: 1', 'buzzblog' ),
+                'default'       => 1,
+                'min'           => 0,
+                'step'          => 1,
+                'max'           => 15,
+                'display_value' => 'text'
+            ),
+											            array(
+                'id'       => 'linebelow_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Color of the line below the main menu', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the color of the line below the main menu.', 'buzzblog' ),
+                'default'  => '#eeeeee',
+                'validate' => 'color',
+            ),
+								            array(
+                'id'            => 'linebelow_border_thick',
+                'type'          => 'slider',
+                'title'         => esc_html__( 'The thickness of the line below the main menu', 'buzzblog' ),
+                'subtitle'      => esc_html__( 'Change the thickness of the line below the main menu.', 'buzzblog' ),
+                'desc'          => esc_html__( 'Min: 0, max: 15, step: 1, default value: 0', 'buzzblog' ),
+                'default'       => 0,
+                'min'           => 0,
+                'step'          => 1,
+                'max'           => 15,
+                'display_value' => 'text'
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Blog', 'buzzblog' ),
+        'id'         => 'hs-blog',
+		'icon'   => 'el el-list',
+        'fields'     => array(
+            		array(
+                'id'       => 'blog_sidebar_pos',
+                'type'     => 'image_select',
+                'title'    => esc_html__( 'Blog layout', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose a blog layout.', 'buzzblog' ),
+                'options'  => array(
+                    'left' => array( 'title' => 'left sidebar', 'img' => get_template_directory_uri() . '/includes/images/2cl.png' ),
+                    'right' => array( 'title' => 'right sidebar', 'img' => get_template_directory_uri() . '/includes/images/2cr.png' ),
+                    'full' => array( 'title' => 'no sidebar', 'img' => get_template_directory_uri() . '/includes/images/1col.png' ),
+					'masonry2' => array( 'title' => 'masonry 2 columns', 'img' => get_template_directory_uri() . '/includes/images/masonry2.png' ),
+                    'masonry3' => array( 'title' => 'masonry 3 columns', 'img' => get_template_directory_uri() . '/includes/images/masonry3.png' ),
+                    'masonry4' => array( 'title' => 'masonry 4 columns', 'img' => get_template_directory_uri() . '/includes/images/masonry4.png' ),
+					'masonry2sideleft' => array( 'title' => 'masonry 2 columns sidebar left', 'img' => get_template_directory_uri() . '/includes/images/masonry2-leftsidebar.png' ),
+                    'masonry2sideright' => array( 'title' => 'masonry 2 columns sidebar right', 'img' => get_template_directory_uri() . '/includes/images/masonry2-rightsidebar.png' ),
+                    'listpostsideright' => array( 'title' => 'list view sidebar right', 'img' => get_template_directory_uri() . '/includes/images/listpost-rightsidebar.png' ),
+					'listpostsideleft' => array( 'title' => 'list view sidebar left', 'img' => get_template_directory_uri() . '/includes/images/listpost-leftsidebar.png' ),
+                    'listpostfullwidth' => array( 'title' => 'list view no sidebar', 'img' => get_template_directory_uri() . '/includes/images/listpost-fullwidth.png' ),
+					'zigzagfullwidth' => array( 'title' => 'zigzag view no sidebar', 'img' => get_template_directory_uri() . '/includes/images/zigzag-fullwidth.png' ),
+                ),
+                'default'  => 'right'
+            ),
+			            array(
+                'id'       => 'blog_text',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Blog page title', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enter Your Blog Title used on Blog page.', 'buzzblog' ),
+                'default'  => '',
+            ),
+						            array(
+                'id'       => 'blog_sub',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Blog page subtitle', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enter Your Blog Subtitle used on Blog page.', 'buzzblog' ),
+                'default'  => '',
+            ),
+			array(
+                'id'          => 'post_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'H2 Post heading', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+				'fonts' => $buzzblog_os_faces,
+                'all_styles'  => true,
+                'output'      => array( '.post-header h2 a, h2.post-title' ),
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for H2 heading and titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'left',
+                    'google'      => true,
+                    'font-size'   => '40px',
+                    'line-height' => '44px',
+					'letter-spacing'=> '-1px',
+					'text-transform'=> 'none'
+                ),
+            ),
+						array(
+                'id'          => 'post_excerpt_font',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'Post excerpt font', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+				'fonts' => $buzzblog_os_faces,
+                'all_styles'  => true,
+                'output'      => array( '.excerpt p' ),
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for posts excerpt.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#525252',
+					'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'left',
+                    'google'      => true,
+                    'font-size'   => '18px',
+                    'line-height' => '28px',
+					'letter-spacing'=> '0px',
+					'text-transform'=> 'none'
+                ),
+            ),
+						            array(
+                'id'       => 'post_header_color',
+                'type'     => 'link_color',
+				'output'   => array( '.post-header h2 a' ),
+				'active'  => false,
+				'regular'  => false,
+                'title'    => esc_html__( 'Post heading hover color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the posts heading hover color', 'buzzblog' ),
+                'default'  => array(
+                    'hover'   => '#dddddd'
+                )
+            ),
+											            array(
+                'id'       => 'post_author',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Author of the post', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display the author of the post?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+							  array(
+                'id'       => 'post_author_box',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Post author box', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Should the author box be displayed?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+						 array(
+                'id'       => 'full_content',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable the full text content posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable the full text content posts.', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+			            array(
+                'id'       => 'featured_images',
+                'type'     => 'select',
+                'title'    => esc_html__( 'Featured image', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable Featured images', 'buzzblog' ),
+                'options'  => array(
+                    'featured1' => 'Show Featured image on the main blog page and single blog page',
+                    'featured2' => 'Show Featured image on the main blog page only',
+                    'featured3' => 'Disable Featured images',
+                ),
+                'default'  => 'featured1'
+            ),
+								 array(
+                'id'       => 'post_excerpt',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable excerpt for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable excerpt for blog posts.', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+						            array(
+                'id'            => 'blog_excerpt_count',
+                'type'          => 'slider',
+                'title'         => esc_html__( 'Excerpt words', 'buzzblog' ),
+                'subtitle'      => esc_html__( 'Excerpt length (words).', 'buzzblog' ),
+                'desc'          => esc_html__( 'Min: 0, max: 150, step: 1, default value: 20', 'buzzblog' ),
+                'default'       => 20,
+                'min'           => 0,
+                'step'          => 1,
+                'max'           => 150,
+                'display_value' => 'text'
+            ),
+
+											 array(
+                'id'       => 'post_date',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Post publication date.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Should the post publication date be displayed?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+						            array(
+                'id'       => 'date_format',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Posts date format.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enter posts date format. For more information go to http://codex.wordpress.org/Formatting_Date_and_Time - Formatting Date and Time website. For example, the format string: l, F j, Y creates a date that look like this: Friday, September 24, 2004', 'buzzblog' ),
+                'default'  => 'F j, Y'
+            ),
+														 array(
+                'id'       => 'pagination_type',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Page numbering', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose pagination type', 'buzzblog' ),
+                'options'  => array(
+                    'pagnum' => esc_html__( 'Links with page numbers', 'buzzblog' ),
+                    'paglink' => esc_html__( 'Links only', 'buzzblog' ),
+					'loadmore' => esc_html__( 'Load more button', 'buzzblog' ),
+					'infinite' => esc_html__( 'Infinite scroll', 'buzzblog' ),
+					'pagnone' => esc_html__( 'None', 'buzzblog' ),
+                ),
+                'default'  => 'pagnum'
+            ),
+						array(
+                'id'       => 'loadmore_offset',
+                'type'     => 'text',
+				'required' => array( 'pagination_type', '=', 'loadmore' ),
+                'title'    => esc_html__( 'Offset', 'buzzblog' ),
+                'subtitle' => esc_html__( 'The number of pages which should load automatically. After that the trigger is shown for every subsequent page. For example: if you set the offset to 2, the pages 2 and 3 (page 1 is always shown) would load automatically and for every subsequent page the user has to press the trigger to load it.', 'buzzblog' ),
+                'default'  => '0'
+            ),
+												            array(
+                'id'       => 'pagination_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Page links color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the color of pagination links', 'buzzblog' ),
+				'active'  => false,
+				'output'      => array( '.paglink a, .paging a h5' ),
+                'default'  => array(
+                    'regular' => '#efa48d',
+                    'hover'   => '#999999'
+                )
+            ),
+																	 array(
+                'id'       => 'single_pagination',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Single pagination', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Should the single post pagination be displayed?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+														 array(
+                'id'       => 'post_category',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Post categories', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Should the post categories be displayed?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+																	 array(
+                'id'       => 'post_tag',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Tags', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Should the tags be displayed?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+																				 array(
+                'id'       => 'post_comment',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Number of comments', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Should the number of comments be displayed?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+																							 array(
+                'id'       => 'related_post',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable related posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable related posts.', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+																										 array(
+                'id'       => 'related_post_single',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Related posts on single post page', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display related posts section, only on single post page?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+																										 array(
+                'id'       => 'most-popular_post',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable Most Popular posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable Most Popular posts.', 'buzzblog' ), 
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+						array(
+                'id'       => 'most_commented_image',
+                'type'     => 'background',
+                'title'    => esc_html__( 'Most popular image', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the most popular background image.', 'buzzblog' ),
+				'output'   => array( '.most-commented' ),
+                'default'  => array(
+        'background-color' => '#f9f9f9',
+    )
+            ),
+									            array(
+                'id'       => 'related_post_header_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Related posts headings color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the color of related posts headings', 'buzzblog' ),
+				'active'  => false,
+				'output'      => array( '.related-posts h6 a' ),
+                'default'  => array(
+                    'regular' => '#222222',
+                    'hover'   => '#999999'
+                )
+            ),
+																										 array(
+                'id'       => 'readmore_button',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable VIEW POST button?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable VIEW POST button', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+         array(
+                'id'       => 'featured_badge_text_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'FEATURED BADGE text color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the FEATURED BADGE text color', 'buzzblog' ),
+                'default'  => '#ffffff'
+            ),
+			         array(
+                'id'       => 'featured_badge_bg_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'FEATURED BADGE background color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the FEATURED BADGE background color', 'buzzblog' ),
+                'default'  => '#efa48d'
+            ),
+						            array(
+                'id'       => 'post_overlay_color',
+                'type'     => 'color_rgba',
+                'title'    => esc_html__( 'Modern Post Header overlay', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the modern post header overlay color.', 'buzzblog' ),
+                'default'  => array(
+                    'color' => '#000000',
+                    'alpha' => '.19'
+                ),
+                'mode'     => 'background',
+            ),
+			         array(
+                'id'       => 'modern_post_meta_text_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Modern post meta text color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the modern post meta text color', 'buzzblog' ),
+                'default'  => '#ffffff'
+            ),
+			array(
+                'id'       => 'modern_post_title_text_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Modern post title color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the modern post title color', 'buzzblog' ),
+                'default'  => '#ffffff'
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Blog categories', 'buzzblog' ),
+        'id'         => 'hs-blog-categories',
+		'icon'   => 'el el-th-list',
+        'fields'     => array(
+            		array(
+                'id'       => 'blog_cat_sidebar_pos',
+                'type'     => 'image_select',
+                'title'    => esc_html__( 'Blog categories layout', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose blog categories layout.', 'buzzblog' ),
+                'options'  => array(
+                    'left' => array( 'title' => 'left sidebar', 'img' => get_template_directory_uri() . '/includes/images/2cl.png' ),
+                    'right' => array( 'title' => 'right sidebar', 'img' => get_template_directory_uri() . '/includes/images/2cr.png' ),
+                    'full' => array( 'title' => 'no sidebar', 'img' => get_template_directory_uri() . '/includes/images/1col.png' ),
+					'masonry2' => array( 'title' => 'masonry 2 columns', 'img' => get_template_directory_uri() . '/includes/images/masonry2.png' ),
+                    'masonry3' => array( 'title' => 'masonry 3 columns', 'img' => get_template_directory_uri() . '/includes/images/masonry3.png' ),
+                    'masonry4' => array( 'title' => 'masonry 4 columns', 'img' => get_template_directory_uri() . '/includes/images/masonry4.png' )
+                ),
+                'default'  => 'masonry2'
+            ),
+							 array(
+                'id'       => 'folio_filter',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Category menu', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Show additional category menu.', 'buzzblog' ),
+                'options'  => array(
+                    'cat' => 'Show',
+                    'none' => 'Hide'
+                ),
+                'default'  => 'cat'
+            ),
+										 array(
+                'id'       => 'category_name',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Category name', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display the name of the category?', 'buzzblog' ),
+                'options'  => array(
+              'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+													 array(
+                'id'       => 'category_word',
+                'type'     => 'button_set',
+                'title'    => esc_html__( '"You are viewing" phrase', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to show "You are viewing" phrase?', 'buzzblog' ),
+                'options'  => array(
+              'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+									            array(
+                'id'       => 'items_cat_count',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Posts per archive page', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Number of posts per page in the category.', 'buzzblog' ),
+                'default'  => '6'
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Custom signature', 'buzzblog' ),
+        'id'         => 'hs-custom-signature',
+		'icon'   => 'el el-user',
+        'fields'     => array(
+				array(
+                'id'       => 'custom-signature-display',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Custom signature', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display custom signature right under every post content?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+			array(
+                'id'       => 'custom-signature-image',
+                'type'     => 'media',
+                'url'      => true,
+                'title'    => esc_html__( 'Custom signature image', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Upload the custom signature image', 'buzzblog' ),
+                'default'  => array( 'url' => '' ),
+            ),
+            array(
+                'id'       => 'signature_text',
+                'type'     => 'textarea',
+                'title'    => esc_html__( 'Message', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enter the custom signature message.', 'buzzblog' ),
+                'default'  => 'XOXO',
+            ),
+
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Slideshow', 'buzzblog' ),
+        'id'         => 'hs-slideshow',
+		'icon'   => 'el el-play',
+        'fields'     => array(
+							 array(
+                'id'       => 'slideshow_enable',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable slideshow', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or disable slideshow on main blog page.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+										 array(
+                'id'       => 'blog_slideshow',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Slideshow type', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose slideshow type', 'buzzblog' ),
+                'options'  => array(
+              'fullwidth' => esc_html__( 'Full width slideshow', 'buzzblog' ),
+              'boxed' => esc_html__( 'Boxed slideshow', 'buzzblog' ),
+			  'inside' => esc_html__( 'Inside the blog content slideshow', 'buzzblog' )
+                ),
+                'default'  => 'inside'
+            ),
+			            array(
+                'id'       => 'posts_by_id',
+                'type'     => 'select',
+                'data'     => 'posts',
+				'args' => array('posts_per_page' => 30),
+                'multi'    => true,
+                'title'    => esc_html__( 'Show Posts by ID', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose posts you want to appear on slideshow. Leave it blank if you would like to pull all posts', 'buzzblog' ),
+            ),
+            array(
+                'id'       => 'posts_by_cat',
+                'type'     => 'select',
+                'data'     => 'categories',
+                'multi'    => true,
+                'title'    => esc_html__( 'Which category to pull from?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Select a categories you would like to pull slides from. Leave it blank if you would like to pull from all categories', 'buzzblog' ),
+            ),
+												            array(
+                'id'       => 'howmany_slides',
+                'type'     => 'text',
+                'title'    => esc_html__( 'How many posts to show?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'This is how many recent posts will be displayed.', 'buzzblog' ),
+                'default'  => '3',
+            ),
+				 array(
+                'id'       => 'howmany_desktop',
+                'type'     => 'text',
+                'title'    => esc_html__( 'The number of visible posts on desktop.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'How many posts will be visible on desktop in carousel.', 'buzzblog' ),
+                'default'  => '1',
+            ),
+				array(
+                'id'       => 'howmany_tablet',
+                'type'     => 'text',
+                'title'    => esc_html__( 'The number of visible posts on tablet device.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'How many posts will be visible on tablet device in carousel.', 'buzzblog' ),
+                'default'  => '1',
+            ),
+				array(
+                'id'       => 'howmany_mobile',
+                'type'     => 'text',
+                'title'    => esc_html__( 'The number of visible posts on phone.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'How many posts will be visible on phone in carousel.', 'buzzblog' ),
+                'default'  => '1',
+            ),
+				  array(
+                'id'       => 'slideshow_thumbwidth',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Image width.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Set the width of the featured image.', 'buzzblog' ),
+                'default'  => '893',
+            ),
+							  array(
+                'id'       => 'slideshow_thumbheight',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Image height.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Set the height of the featured image.', 'buzzblog' ),
+                'default'  => '600',
+            ),
+										  array(
+                'id'       => 'slideshow_margin',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Margin-right(px) on item.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Set the margin-right value of the featured image.', 'buzzblog' ),
+                'default'  => '24',
+            ),
+										 array(
+                'id'       => 'slideshow_date',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable or disable post date.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display post date?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+													 array(
+                'id'       => 'slideshow_author',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable or disable post author.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display post author?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+																 array(
+                'id'       => 'slideshow_cat_name',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display the category name.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display the category name?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+																			 array(
+                'id'       => 'slideshow_viewpost',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display the VIEW POST button.', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display the VIEW POST button ?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+									            array(
+                'id'            => 'slideshow_excerpt_words',
+                'type'          => 'slider',
+                'title'         => esc_html__( 'The number of words in the excerpt', 'buzzblog' ),
+                'subtitle'      => esc_html__( 'How many words will be disapled in the post excerpt', 'buzzblog' ),
+                'desc'          => esc_html__( 'Min: 0, max: 150, step: 1, default value: 10', 'buzzblog' ),
+                'default'       => 10,
+                'min'           => 0,
+                'step'          => 1,
+                'max'           => 150,
+                'display_value' => 'text'
+            ),
+																			 array(
+                'id'       => 'slideshow_autoplay',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable autoplay funtion', 'buzzblog' ),
+                'subtitle' => esc_html__( 'If you want to disable autoplay function choose No', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+													  array(
+                'id'       => 'slideshow_pause',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Pause between slides', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Pause between slides in milliseconds. Example: 5000 is a 5 seconds.', 'buzzblog' ),
+                'default'  => '5000',
+            ),
+				array(
+                'id'       => 'slideshow_displaynavs',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Next and prev navigation', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display next and prev navigation.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+							array(
+                'id'       => 'slideshow_displaypagination',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Pagination', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display pagination buttons.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+						            array(
+                'id'       => 'slideshow_overlay_color',
+                'type'     => 'color_rgba',
+                'title'    => esc_html__( 'Slideshow overlay', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the slideshow overlay color.', 'buzzblog' ),
+                'default'  => array(
+                    'color' => '#ffffff',
+                    'alpha' => '.94'
+                ),
+                'mode'     => 'background',
+            ),
+			         array(
+                'id'       => 'slideshow_heading_text_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Slideshow heading text color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the slideshow heading text color', 'buzzblog' ),
+				'output'      => array( '.carousel-wrap h2 a' ),
+                'default'  => '#000000'
+            ),
+			array(
+                'id'       => 'slideshow_text_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Slideshow texts color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the slideshow texts color', 'buzzblog' ),
+				'output'      => array( '.carousel-wrap, .carousel-wrap .excerpt p' ),
+                'default'  => '#000000'
+            ),
+        )
+    ) );
+    Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Promo area', 'buzzblog' ),
+        'id'         => 'promo-slides',
+        'icon'   => 'el el-website',
+        'fields'     => array(
+									 array(
+                'id'       => 'promotion_enable',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable promotion area', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or disable promotion area on main blog page.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+            array(
+                'id'          => 'promo-areaslides',
+                'type'        => 'slides',
+                'title'       => esc_html__( 'Promo items', 'buzzblog' ),
+                'subtitle'    => esc_html__( 'Add exactly 3 promo items.', 'buzzblog' ),
+			       'show' => array(
+                    'title' => true,
+                    'description' => false,
+                    'url' => true,
+                ),
+				'content_title' => esc_html__( 'Promo Item', 'buzzblog' ),
+                'placeholder' => array(
+                    'title'       => esc_html__( 'Title', 'buzzblog' ),
+                    'url'         => esc_html__( 'Link', 'buzzblog' ),
+                ),
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Social Networks', 'buzzblog' ),
+        'id'         => 'hs-social',
+		'icon'   => 'el el-share',
+        'fields'     => array(
+							 array(
+                'id'       => 'social_share',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable Social sharing for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable Social sharing for blog posts.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+								 array(
+                'id'       => 'shareon',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display Share on text', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Should Share on text be displayed?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' ) 
+                ),
+                'default'  => 'no'
+            ),
+											 array(
+                'id'       => 'facebook_share',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable Facebook sharing for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable Facebook sharing for blog posts.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+														 array(
+                'id'       => 'twitter_share',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable Twitter sharing for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable Twitter sharing for blog posts.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+					 array(
+                'id'       => 'hs_twitter_username',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Twitter username', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enter your Twitter username.', 'buzzblog' ),
+                'default'  => 'buzzblog',
+            ),
+																	 array(
+                'id'       => 'gplus_share',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable Google Plus sharing for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable Google Plus sharing for blog posts.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+																				 array(
+                'id'       => 'pinterest_share',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable Pinterest sharing for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable Pinterest sharing for blog posts.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+																							 array(
+                'id'       => 'tumblr_share',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable Tumblr sharing for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable Tumblr sharing for blog posts.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+																										 array(
+                'id'       => 'vkontakte_share',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable vkontakte sharing for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable vkontakte sharing for blog posts.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+																																		 array(
+                'id'       => 'whatsapp_share',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable whatsapp sharing for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable whatsapp sharing for blog posts.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+																													 array(
+                'id'       => 'email_share',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Enable Email sharing for blog posts?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enable or Disable Email sharing for blog posts.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Blog grid', 'buzzblog' ),
+        'id'         => 'hs-bloggrid',
+		'icon'   => 'el el-th',
+        'fields'     => array(
+									array(
+                'id'          => 'grid_post_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'H2 Grid Post heading', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+				'fonts' => $buzzblog_os_faces,
+                'all_styles'  => true,
+                'output'      => array( '.grid .post-header h2 a, .grid h2.post-title, .post-grid-block h2.grid-post-title a, .post-grid-block h2.grid-post-title' ),
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for H2 grid post titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'left',
+                    'google'      => true,
+                    'font-size'   => '30px',
+                    'line-height' => '32px',
+					'letter-spacing'=> '-1px',
+					'text-transform'=> 'none'
+                ),
+            ),
+						            array(
+                'id'       => 'grid_post_header_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Grid posts heading hover color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the hover color of the the grid posts heading', 'buzzblog' ),
+				'output'      => array( '.grid-block h2 a' ),
+				'active' => false,
+				'regular' => false,
+                'default'  => array(
+                    'hover'   => '#dddddd',
+                )
+            ),
+																	            array(
+                'id'       => 'blog_grid_special_post',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Special post full width', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to have every third, fourth or fifth post full width depending on the selected grid blog layout ?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'List Blog', 'buzzblog' ),
+        'id'         => 'hs-bloglist',
+		'icon'   => 'el el-th',
+        'fields'     => array(
+									array(
+                'id'          => 'list_post_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'H2 List Post heading', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+				'fonts' => $buzzblog_os_faces,
+                'all_styles'  => true,
+                'output'      => array( '.list-post h2.list-post-title a, .list-post h2.list-post-title' ),
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for H2 list post titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'left',
+                    'google'      => true,
+                    'font-size'   => '36px',
+                    'line-height' => '42px',
+					'letter-spacing'=> '-1px',
+					'text-transform'=> 'none'
+                ),
+            ),
+						            array(
+                'id'       => 'list_post_header_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'List posts heading hover color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the hover color of the the list posts heading', 'buzzblog' ),
+				'output'      => array( '.list-post h2.list-post-title a' ),
+				'active' => false,
+				'regular' => false,
+                'default'  => array(
+                    'hover'   => '#dddddd',
+                )
+            ),
+																				            array(
+                'id'       => 'blog_list_special_post',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Special post full width', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to have every third post full width ?', 'buzzblog' ),
+                'options'  => array(
+                    'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Gallery', 'buzzblog' ),
+        'id'         => 'hs-gallery',
+		'icon'   => 'el el-picture',
+        'fields'     => array(
+    array(
+                'id'       => 'gallery_columns',
+                'type'     => 'select',
+                'title'    => esc_html__( 'Number of columns', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose the number of columns (2, 3, or 4)', 'buzzblog' ),
+                'options'  => array(
+                    '2' => '2 columns',
+                    '3' => '3 columns',
+                    '4' => '4 columns',
+                ),
+                'default'  => '3'
+            ),
+ array(
+                'id'       => 'images_per_page',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Images per page', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Set number of thumbnail images per gallery page.', 'buzzblog' ),
+                'default'  => '3',
+            ),
+			array(
+                'id'          => 'hs_gallery_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'Image titles font', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+				'fonts' => $buzzblog_os_faces,
+                'all_styles'  => true,
+                'output'      => array( 'h3.gall-title' ),
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for gallery image titles.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-style'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'leftr',
+                    'google'      => true,
+					'text-transform'=> 'none',
+                    'font-size'   => '26px',
+                    'line-height' => '30px',
+					'letter-spacing'=> '-1px'
+                ),
+            ),
+			array(
+                'id'       => 'gallery_cat_filter',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Category filter', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display category filter', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+array(
+                'id'       => 'gallery_title',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Image titles', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display image titles', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+array(
+                'id'       => 'gallery_category',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Image category', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display image category', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+array(
+                'id'       => 'gallery_description',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Image description', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display image description', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+									            array(
+                'id'            => 'gallery_excerpt_count',
+                'type'          => 'slider',
+                'title'         => esc_html__( 'Excerpt words', 'buzzblog' ),
+                'subtitle'      => esc_html__( 'Excerpt length (words).', 'buzzblog' ),
+                'desc'          => esc_html__( 'Min: 0, max: 150, step: 1, default value: 0', 'buzzblog' ),
+                'default'       => 0,
+                'min'           => 0,
+                'step'          => 1,
+                'max'           => 150,
+                'display_value' => 'text'
+            ),
+						array(
+                'id'          => 'hs_gallery_meta_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'Meta headings font', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+				'fonts' => $buzzblog_os_faces,
+                'all_styles'  => true,
+                'output'      => array( '.gallery-meta-line, .gallery-meta-line h4' ),
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for gallery meta headings.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-style'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'center',
+                    'google'      => true,
+                    'font-size'   => '16px',
+                    'line-height' => '20px',
+					'letter-spacing'=> '0px',
+					'text-transform'=> 'uppercase'
+                ),
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Sidebar', 'buzzblog' ),
+        'id'         => 'hs-sidebar',
+		'icon'   => 'el el-indent-right',
+        'fields'     => array(
+					            array(
+                'id'       => 'sidebar_sticky',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Sidebar type', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the sidebar type (normal or sticky)', 'buzzblog' ),
+                'options'  => array(
+                    'stickysidebar' => esc_html__( 'Sticky', 'buzzblog' ), 
+                    'normalsidebar' => esc_html__( 'Normal', 'buzzblog' ) 
+                ),
+                'default'  => 'normalsidebar'
+            ),
+					array(
+                'id'          => 'h4_sidebar_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'Sidebar heading font', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+				'fonts' => $buzzblog_os_faces,
+                'output'      => array( '.widget-content h4.subtitle' ),
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for sidebar H4 headings.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'left',
+                    'google'      => true,
+                    'font-size'   => '20px',
+                    'line-height' => '20px',
+					'letter-spacing'=> '0px',
+					'text-transform'=> 'uppercase'
+                ),
+            ),
+						            array(
+                'id'       => 'sidebar_post_header_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Recent News widget posts heading colour', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the colour of the the Recent News posts heading', 'buzzblog' ),
+				'output'   => array( '.my_posts_type_widget h4 a' ),
+				'active'  => false,
+                'default'  => array(
+                    'regular' => '#000000',
+                    'hover'   => '#dddddd',
+                )
+            ),
+								array(
+                'id'          => 'h4_sidebar_post_post_list_heading',
+                'type'        => 'typography',
+                'title'       => esc_html__( 'Sidebar recent news font', 'buzzblog' ),
+                'font-backup' => false,
+                'letter-spacing'=> true,
+				'text-transform'=> true,
+                'all_styles'  => true,
+				'fonts' => $buzzblog_os_faces,
+                'output'      => array( '.post-list_h h4 a, .post-list_h h4' ),
+                'units'       => 'px',
+                'subtitle'    => esc_html__( 'Choose your preferred font for recent news headings.', 'buzzblog' ),
+                'default'     => array(
+                    'color'       => '#222222',
+                    'font-weight'  => '400',
+                    'font-family' => 'Playfair Display',
+					'text-align' => 'left',
+					'text-transform'=> 'none',
+                    'google'      => true,
+                    'font-size'   => '20px',
+                    'line-height' => '23px',
+					'letter-spacing'=> '-1px'
+                ),
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Footer', 'buzzblog' ),
+        'id'         => 'hs-footer',
+		'icon'   => 'el el-chevron-down',
+        'fields'     => array(
+            array(
+                'id'       => 'footer_text',
+                'type'     => 'textarea',
+                'title'    => esc_html__( 'Footer copyright text', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enter text used in the right side of the footer. HTML tags are allowed.', 'buzzblog' ),
+                'default'  => 'Copyrights &copy; 2016 BUZZBLOG. All Rights Reserved.',
+				'allowed_html' => array(
+        'a' => array(
+            'href' => array(),
+            'title' => array()
+        ),
+        'br' => array(),
+        'em' => array(),
+        'strong' => array(),
+		'div' => array(),
+		'p' => array(),
+		'span' => array()
+    )
+            ),
+			 array(
+                'id'       => 'feed_url',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Feedburner URL', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Feedburner is a Google service that takes care of your RSS feed. Paste your Feedburner URL here to let readers see it in your website.', 'buzzblog' ),
+                'default'  => '',
+            ),
+			array(
+                'id'       => 'bottom_layout',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Bottom widgets layout', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose Bottom widgets area layout', 'buzzblog' ),
+                'options'  => array(
+            'onecolumn' => 'One column',
+                    'threecols' => 'Three columns'
+                ),
+                'default'  => 'onecolumn'
+            ),
+		array(
+                'id'       => 'footer_menu',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display Footer Menu?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display footer menu?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+		array(
+                'id'       => 'footer_logo',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display Footer Logo?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display logo in the footer?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+		array(
+                'id'       => 'footer_lowest',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display the lowest Footer Section?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display the lowest footer section?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'yes'
+            ),
+array(
+                'id'       => 'footer_menu_typography',
+                'type'     => 'typography',
+                'title'    => esc_html__( 'Footer Menu Typography', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your prefered font for menu.', 'buzzblog' ),
+                'google'   => true,
+				'fonts' => $buzzblog_os_faces,
+				'letter-spacing'=> true,
+				'output'      => array( '.nav.footer-nav a' ),
+                'default'  => array(
+                    'color'       => '#000000',
+                    'font-size'   => '13px',
+					'line-height'   => '22px',
+					'letter-spacing'   => '0px',
+                    'font-family' => '',
+                    'font-weight' => 'Normal',
+                ),
+            ),
+            array(
+                'id'       => 'footer_menu_hover_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Hover / active footer menu link color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the footer menu hover/active link color.', 'buzzblog' ),
+                'regular'   => false,
+				'active'  => false,
+				'output'   => array( '.nav.footer-nav ul li a' ),
+                'default'  => array(
+                    'hover'   => '#bbbbbb',
+                )
+            ),
+		            array(
+                'id'       => 'footer_text_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Footer text color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the footer text color.', 'buzzblog' ),
+				'output'   => array( '.footer-text' ),
+                'default'  => '#666666',
+                'validate' => 'color',
+            ),
+		            array(
+                'id'       => 'footer_logo_color',
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Footer logo color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the footer logo color.', 'buzzblog' ),
+				'output'   => array( '.footer .logo a' ),
+				'active'   => false,
+                'default'  => array(
+				    'regular' => '#dddddd',
+                    'hover'   => '#dddddd',
+                )
+            ),
+		            array(
+                'id'       => 'footer_logo_tagline_color', 
+                'type'     => 'color',
+                'title'    => esc_html__( 'Footer tagline color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the footer tagline color.', 'buzzblog' ),
+				'output'   => array( '.footer .logo_tagline' ),
+                'default'  => '#dddddd',
+                'validate' => 'color',
+            ),
+array(
+                'id'       => 'footer_bg_color',
+                'type'     => 'background',
+                'title'    => esc_html__( 'Footer background', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the footer background.', 'buzzblog' ),
+				'output'   => array( '.footer-logo' ),
+                'default'  => array(
+        'background-color' => '#ffffff',
+    )
+            ),
+		            array(
+                'id'       => 'footer_links_color', 
+                'type'     => 'link_color',
+                'title'    => esc_html__( 'Footer links color', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the footer links color.', 'buzzblog' ),
+				'output'   => array( '.footer a' ),
+				'active'   => false,
+                'default'  => array(
+				    'regular' => '#cccccc',
+                    'hover'   => '#efa48d',
+                )
+            ),
+												            array(
+                'id'       => 'footerline_color',
+                'type'     => 'color',
+                'title'    => esc_html__( 'Color of the line above the Copyrights section', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the color of the line above the Copyrights section.', 'buzzblog' ),
+                'default'  => '#eeeeee',
+                'validate' => 'color',
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Cookie banner', 'buzzblog' ),
+        'id'         => 'hs-cookie-banner',
+		'icon'   => 'el el-chevron-down',
+        'fields'     => array(
+				array(
+                'id'       => 'cookie_banner',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Cookie banner', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display Cookie Banner?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+            array(
+                'id'       => 'cookie_text',
+                'type'     => 'textarea',
+                'title'    => esc_html__( 'Message', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enter the cookie banner message.', 'buzzblog' ),
+                'default'  => 'We use cookies to ensure you get the best experience on our website.',
+            ),
+
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Newsletter', 'buzzblog' ),
+        'id'         => 'hs-newsletter',
+		'icon'   => 'el el-envelope',
+        'fields'     => array(
+array(
+                'id'       => 'newsletter_image',
+                'type'     => 'background',
+                'title'    => esc_html__( 'Newsletter background image', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the newsletter background image.', 'buzzblog' ),
+				'output'      => array( '#hs_signup' ),
+                'default'  => array(
+        'background-color' => '#ffffff',
+    )
+            ),
+		array(
+                'id'       => 'hs_newsletter_display',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Display SUBSCRIBE link?', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Display SUBSCRIBE link in the main menu?', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+
+			array(
+    'id'               => 'newsletter-text',
+    'type'             => 'editor',
+    'title'            => esc_html__('Newsletter text', 'buzzblog'), 
+    'subtitle'         => esc_html__('Newsletter text go here.', 'buzzblog'),
+    'default'          => 'Sign up with your email address to be the first to know about new products, VIP offers, blog features & more.',
+    'args'   => array(
+        'teeny'            => false,
+        'textarea_rows'    => 20
+    )),
+					array(
+                'id'       => 'newsletter-cookie-onload',
+                'type'     => 'button_set',
+                'title'    => esc_html__( 'Newsletter onload', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Do you want to display Newsletter popup window on page load ? Pop up will show up only once. It will appear again after 15 days, unless you delete the cookies files.', 'buzzblog' ),
+                'options'  => array(
+            'yes' => esc_html__( 'Yes', 'buzzblog' ),
+                    'no' => esc_html__( 'No', 'buzzblog' )
+                ),
+                'default'  => 'no'
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Login Form', 'buzzblog' ),
+        'id'         => 'hs-login-form',
+		'icon'   => 'el el-user',
+        'fields'     => array(
+		array(
+                'id'       => 'login_form_logo',
+                'type'     => 'media',
+                'url'      => true,
+                'title'    => esc_html__( 'Login Form logo', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Upload the login form logo image. Logo dimensions should be: 320px x 67px', 'buzzblog' ),
+                'default'  => array( 'url' => '' ),
+            ),
+array(
+                'id'       => 'login_form_image_bg',
+                'type'     => 'media',
+				'url'      => true,
+                'title'    => esc_html__( 'Login Form background', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Change the Login Form background image', 'buzzblog' ),
+				'default'  => array( 'url' => '' ),
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Woocommerce', 'buzzblog' ),
+        'id'         => 'hs-woocommerce',
+		'icon'   => 'el el-shopping-cart',
+        'fields'     => array(
+					            array(
+                'id'       => 'woocommerce_title',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Shop page title', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enter Your Shop Title.', 'buzzblog' ),
+                'default'  => 'Welcome to BuzzBlog store',
+            ),
+						            array(
+                'id'       => 'woocommerce_subtitle',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Blog page subtitle', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Enter Your Shop Subtitle.', 'buzzblog' ),
+                'default'  => 'Shirts & Shorts to Complete any outfit',
+            ),
+		array(
+                'id'       => 'woocommerce_sidebar_pos',
+                'type'     => 'image_select',
+                'title'    => esc_html__( 'Default woocommerce page layout', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Choose your default woocommerce page layout.', 'buzzblog' ),
+                'options'  => array(
+                    'left' => array( 'title' => 'left sidebar', 'img' => get_template_directory_uri() . '/includes/images/2cl.png' ),
+                    'right' => array( 'title' => 'right sidebar', 'img' => get_template_directory_uri() . '/includes/images/2cr.png' ),
+                    'full' => array( 'title' => 'no sidebar', 'img' => get_template_directory_uri() . '/includes/images/1col.png' )
+                ),
+                'default'  => 'right'
+            ),
+												            array(
+                'id'       => 'woocommerce_items_per_page',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Products per page', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Number of products per page.', 'buzzblog' ),
+                'default'  => '6'
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Twitter settings', 'buzzblog' ),
+        'id'         => 'hs-twitter-settings',
+		'icon'   => 'el el-twitter',
+        'fields'     => array(
+		array(
+    'id'   => 'info_normal',
+    'type' => 'info',
+    'desc' => esc_html__('Twitter access is required for Twitter widget. Open the documentation and read Twitter API chapter.', 'buzzblog')
+),
+					            array(
+                'id'       => 'twitter_consumer_key',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Consumer Key', 'buzzblog' ),
+                'default'  => '',
+            ),
+						            array(
+                'id'       => 'twitter_consumer_secret',
+                'type'     => 'text',
+                'title'    => esc_html__( 'Consumer Secret', 'buzzblog' ),
+                'default'  => '',
+            ),
+        )
+    ) );
+Redux::setSection( $opt_name, array(
+        'title'      => esc_html__( 'Google Analytics', 'buzzblog' ),
+        'id'         => 'hs-google-analytics',
+		'icon'   => 'el el-googleplus',
+        'fields'     => array(
+			            array(
+                'id'       => 'google_analytics',
+                'type'     => 'ace_editor',
+                'title'    => esc_html__( 'Google Analytics', 'buzzblog' ),
+                'subtitle' => esc_html__( 'Want to add Google Analytics code or any custom js code? Put in here, and the rest is taken care of.', 'buzzblog' ),
+                'mode'     => 'javascript',
+                'theme'    => 'chrome',
+                'default'  => ""
+            ),
+        )
+    ) );
+    /*
+     * <--- END SECTIONS
+     */
+}
+buzzblog_OptionsPanel();

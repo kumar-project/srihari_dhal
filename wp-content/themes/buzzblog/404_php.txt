@@ -1,0 +1,21 @@
+<?php 
+/**
+* Template Name: 404
+*/ 
+get_header(); ?>
+<div class="content-holder clearfix">
+    <div class="container">
+                <div class="row error404-holder">
+                    <div class="col-md-7 error404-holder_num">
+                    	<?php get_template_part("static/static-404"); ?>
+                    </div>
+                    <div class="col-md-5">
+                    	<?php get_template_part("static/static-not-found"); ?>
+                    </div>
+                </div>
+    </div>
+</div>
+<footer class="footer">
+<?php get_template_part('wrapper/wrapper-footer'); ?>
+</footer>
+<?php get_footer(); ?>

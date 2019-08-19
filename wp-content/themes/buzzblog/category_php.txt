@@ -1,0 +1,89 @@
+<?php get_header(); ?>
+<div class="content-holder clearfix">
+	<div class="container">
+<?php get_template_part('title'); ?>
+				<?php if ( is_active_sidebar( 'hs_under_header' ) ) : ?>
+
+				<div class="row">
+				<div class="col-md-12">
+				<?php dynamic_sidebar("hs_under_header"); ?>
+				</div>
+				</div>
+				
+				<?php endif; ?>
+                <div class="row">
+ 				<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='right' or buzzblog_getVariable('blog_cat_sidebar_pos')=='') { ?>   
+                    <div class="col-md-8" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+                        <?php get_template_part("loop/loop-blog-main"); ?>
+						<?php get_template_part('post-template/post-nav'); ?>
+                    </div>
+                 <div class="col-md-4 sidebar <?php if (buzzblog_getVariable('sidebar_sticky')=='stickysidebar') { echo 'sticky-sidebar'; } ?>" id="sidebar">
+                         <div class="theiaStickySidebar">
+                        <?php dynamic_sidebar("hs_main_sidebar"); ?>
+                    </div></div>
+					<?php } ?> 
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='left') { ?>   
+                    <div class="col-md-8 col-md-push-4 " id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+                        <?php get_template_part("loop/loop-blog-main"); ?>
+						<?php get_template_part('post-template/post-nav'); ?>
+                    </div>
+                 <div class="col-md-4 col-md-pull-8 sidebar <?php if (buzzblog_getVariable('sidebar_sticky')=='stickysidebar') { echo 'sticky-sidebar'; } ?> left" id="sidebar">
+                        <div class="theiaStickySidebar">
+                        <?php dynamic_sidebar("hs_main_sidebar"); ?>
+                    </div></div>
+					<?php } ?> 
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='full') { ?>   
+                    <div class="col-md-12" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+                        <?php get_template_part("loop/loop-blog-main"); ?>
+						<?php get_template_part('post-template/post-nav'); ?>
+                    </div>
+					<?php } ?> 
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='masonry2') { ?>   
+                    <div class="col-md-12" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+					<div class="grid js-masonry ajax-container row">
+                        <?php get_template_part("loop/loop-cat-blog2"); ?>
+						 </div>
+											<div class="row">
+					<div class="col-md-12">
+					<?php get_template_part('post-template/post-nav'); ?>
+					</div></div>
+					
+                    </div>
+					<?php } ?> 					
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='masonry3') { ?>   
+                    <div class="col-md-12" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+					<div class="grid js-masonry ajax-container row">
+                        <?php get_template_part("loop/loop-cat-blog3"); ?>
+						 </div>
+				    											<div class="row">
+					<div class="col-md-12">
+					<?php get_template_part('post-template/post-nav'); ?>
+					</div></div>
+                    </div>
+					<?php } ?> 
+					<?php if (buzzblog_getVariable('blog_cat_sidebar_pos')=='masonry4') { ?>   
+                    <div class="col-md-12" id="content">
+					<?php get_template_part('post-template/posts-categories');	 ?>
+					<div class="grid js-masonry ajax-container row">
+                        <?php get_template_part("loop/loop-cat-blog4"); ?>
+						</div>
+																	<div class="row">
+					<div class="col-md-12">
+					<?php get_template_part('post-template/post-nav'); ?>
+					</div></div>
+                    </div>
+					<?php } ?>
+
+                      </div>
+               
+    </div>
+</div>
+<footer class="footer">
+<?php get_template_part('wrapper/wrapper-footer'); ?>
+</footer>
+<?php get_footer(); ?>

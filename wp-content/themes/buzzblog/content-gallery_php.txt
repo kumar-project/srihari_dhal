@@ -1,0 +1,81 @@
+<?php 
+$hs_gal_role = get_post_meta( get_the_ID(), 'buzzblog_gallery_role', true );
+$hs_gal_year = get_post_meta( get_the_ID(), 'buzzblog_gallery_year', true );
+$hs_gal_client = get_post_meta( get_the_ID(), 'buzzblog_gallery_client', true );
+$hs_gal_technology = get_post_meta( get_the_ID(), 'buzzblog_gallery_technology', true );
+$hs_gal_url = get_post_meta( get_the_ID(), 'buzzblog_gallery_url', true );
+$hs_gal_target = get_post_meta( get_the_ID(), 'buzzblog_gallery_target', true );
+?>
+<article id="post-<?php the_ID(); ?>" <?php post_class('post__holder'); ?>>
+	<div class="row">
+	<div class="col-md-12">
+
+	<?php /* Top meta */ ?>
+	<?php get_template_part('post-template/post-meta-top-gallery');  ?>
+<?php /* Top meta */ ?>
+	
+<?php /* content */ ?>
+						
+	<!-- Post Content -->
+	<div class="post_content">
+	<?php get_template_part('post-template/post-thumb'); ?>
+	<?php 
+	if(is_singular()) : ?>
+	<div class="isopad">
+	<?php if ($hs_gal_role or $hs_gal_year or $hs_gal_client or $hs_gal_technology ) { ?>
+	<div class="row gallery-meta-line">
+<div class="col-md-3 col-sm-3 col-xs-12 gal-role">
+<?php if ($hs_gal_role) { ?>
+<h4><?php echo theme_locals("gal_our_role");?></h4>
+<span><?php echo esc_attr( $hs_gal_role); } ?></span>
+</div>
+<div class="col-md-3 col-sm-3 col-xs-12 gal-year">
+<?php if ($hs_gal_year) { ?>
+<h4><?php echo theme_locals("gal_year");?></h4>
+<span><?php echo esc_attr( $hs_gal_year); } ?></span>
+</div>
+<div class="col-md-3 col-sm-3 col-xs-12 gal-client">
+<?php if ($hs_gal_client) { ?>
+<h4><?php echo theme_locals("gal_client");?></h4>
+<span><?php echo esc_attr( $hs_gal_client); } ?></span>
+</div>
+<div class="col-md-3 col-sm-3 col-xs-12 gal-technology">
+<?php if ($hs_gal_technology) { ?>
+<h4><?php echo theme_locals("gal_technology");?></h4>
+<span><?php echo esc_attr( $hs_gal_technology); } ?></span>
+</div>
+</div>
+<?php	}else {}  ?>
+<?php
+				the_content();
+		        wp_link_pages('before=<div class="pagelink">&after=</div>');
+		
+		 ?>
+<div class="clear"></div>
+
+	</div>
+	<!-- //Post Content -->	
+	<?php endif; ?>
+<?php /* content */ ?>
+</div>
+	
+</div></div>
+<!-- Meta and share buttons -->
+<div class="row meta-line">
+<div class="col-md-12">
+<?php get_template_part( 'post-template/share-buttons' ); ?>
+</div></div>
+<div class="row">
+<div class="col-md-12">
+
+<?php if ($hs_gal_url) { ?>
+				
+				<div class="viewpost-button"><a <?php if ($hs_gal_target) {echo esc_attr( 'target="_'.$hs_gal_target.'"'); } ?> class="button" href="<?php echo esc_url($hs_gal_url); ?>"><span><?php echo theme_locals("gal_url"); ?></span></a></div>
+				
+		<div class="clear"></div>
+		<?php } ?>
+</div>
+</div>
+
+
+</article>

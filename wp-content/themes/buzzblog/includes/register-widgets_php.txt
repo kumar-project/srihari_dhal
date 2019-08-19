@@ -1,0 +1,17 @@
+<?php
+/**
+ * Loads up all the widgets defined by this theme. Note that this function will not work for versions of WordPress 2.7 or lower
+ *
+ */
+get_template_part('includes/widgets/buzzblog_aboutme');
+get_template_part('includes/widgets/buzzblog-banner');
+get_template_part('includes/widgets/buzzblog-comment-widget');
+get_template_part('includes/widgets/buzzblog-facebook-widget');
+get_template_part('includes/widgets/buzzblog-flickr-widget');
+get_template_part('includes/widgets/buzzblog-recent-news-widget');
+get_template_part('includes/widgets/buzzblog-social-widget');
+get_template_part('includes/widgets/buzzblog-twitter-class-widget');
+get_template_part('includes/widgets/buzzblog-instagram-widget');
+get_template_part('includes/widgets/buzzblog-likes-widget');
+get_template_part('includes/widgets/buzzblog-125-banner');
+?>

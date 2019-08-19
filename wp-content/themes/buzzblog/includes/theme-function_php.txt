@@ -1,0 +1,356 @@
+<?php
+// Begin Excerpt Code
+function buzzblog_allowedtags() {
+    // Add custom tags to this string
+        return '<script>,<style>,<br>,<em>,<i>,<ul>,<ol>,<li>,<a>,<p>,<img>,<video>,<audio>,<blockquote><strong>'; 
+    }
+
+if ( ! function_exists( 'buzzblog_custom_wp_trim_excerpt' ) ) : 
+
+    function buzzblog_custom_wp_trim_excerpt($buzzblog_excerpt) {
+    $raw_excerpt = $buzzblog_excerpt;
+        if ( '' == $buzzblog_excerpt ) {
+
+            $buzzblog_excerpt = get_the_content('');
+            //$buzzblog_excerpt = strip_shortcodes( $buzzblog_excerpt );
+            $buzzblog_excerpt = apply_filters('the_content', $buzzblog_excerpt);
+            $buzzblog_excerpt = str_replace(']]>', ']]&gt;', $buzzblog_excerpt);
+            $buzzblog_excerpt = strip_tags($buzzblog_excerpt, buzzblog_allowedtags()); /*IF you need to allow just certain tags. Delete if all tags are allowed */
+
+            //Set the excerpt word count and only break after sentence is complete.
+			$blog_excerpt = buzzblog_getVariable( 'blog_excerpt_count' );
+			
+                $excerpt_word_count = $blog_excerpt;
+                $excerpt_length = apply_filters('excerpt_length', intval($excerpt_word_count)); 
+                $tokens = array();
+                $excerptOutput = '';
+                $count = 0;
+
+                // Divide the string into tokens; HTML tags, or words, followed by any whitespace
+                preg_match_all('/(<[^>]+>|[^<>\s]+)\s*/u', $buzzblog_excerpt, $tokens);
+
+                foreach ($tokens[0] as $token) { 
+
+                    if ($count >= $excerpt_length && preg_match('/[\,\;\?\.\!]\s*$/uS', $token)) { 
+                    // Limit reached, continue until , ; ? . or ! occur at the end
+                        $excerptOutput .= trim($token);
+                        break;
+                    }
+
+                    // Add words to complete sentence
+                    $count++;
+
+                    // Append what's left of the token
+                    $excerptOutput .= $token;
+                }
+
+            $buzzblog_excerpt = trim(force_balance_tags($excerptOutput));
+
+            return $buzzblog_excerpt;   
+
+        }
+        return apply_filters('buzzblog_custom_wp_trim_excerpt', $buzzblog_excerpt, $raw_excerpt);
+    }
+
+endif; 
+
+remove_filter('get_the_excerpt', 'wp_trim_excerpt');
+add_filter('get_the_excerpt', 'buzzblog_custom_wp_trim_excerpt'); 
+
+
+function buzzblog_limit_text($content = false, $length) {
+ 
+// if no content, fail
+if($content == false)
+return false;
+ 
+//strip shortcodes & tags
+$content = preg_replace("~(?:\[/?)[^/\]]+/?\]~s", '', $content);
+$content = strip_tags($content);
+$excerpt_length = $length;
+$words = explode(' ', $content, $excerpt_length + 1);
+ 
+//if the content is longer than the limit
+if(count($words) > $excerpt_length) :
+array_pop($words);
+array_push($words, '...', '');
+endif;
+$content = implode(' ', $words);
+$content = '<p>' . esc_html($content) . '</p>';
+ 
+// Make sure to return the content
+return $content;
+}
+if(!function_exists('buzzblog_next_page')) {
+  function buzzblog_next_page($max_num_pages = 0) {
+
+    if ($max_num_pages === false) {
+      global $wp_query;
+      $max_num_pages = $wp_query->max_num_pages;
+    }
+
+    if ($max_num_pages > max(1, get_query_var('paged'))) {
+
+      return get_pagenum_link(max(1, get_query_var('paged')) + 1);
+    }
+    return false;
+  }
+}
+// Remove invalid tags
+function buzzblog_remove_invalid_tags($hs_str, $tags) 
+{
+    foreach($tags as $tag)
+    {
+    	$hs_str = preg_replace('#^<\/'.$tag.'>|<'.$tag.'>$#', '', trim($hs_str));
+    }
+
+    return $hs_str;
+}
+
+// Generates a random string (for embedding flash)
+function buzzblog_gener_random($length){
+
+	srand((double)microtime()*1000000 );
+	
+	$hs_random_id = "";
+	
+	$char_list = "abcdefghijklmnopqrstuvwxyz";
+	
+	for($i = 0; $i < $length; $i++) {
+		$hs_random_id .= substr($char_list,(rand()%(strlen($char_list))), 1);
+	}
+	
+	return $hs_random_id;
+}
+
+
+// Add Thumb Column
+if ( !function_exists('buzzblog_fb_AddThumbColumn') && function_exists('add_theme_support') ) {
+	// for post and page
+	add_theme_support('post-thumbnails', array( 'post', 'page' ) );
+	function buzzblog_fb_AddThumbColumn($cols) {
+	$cols['thumbnail'] = esc_html__('Thumbnail', 'buzzblog');
+	return $cols;
+}
+function buzzblog_fb_AddThumbValue($column_name, $post_id) {
+	$hs_width = (int) 35;
+	$hs_height = (int) 35;
+	if ( 'thumbnail' == $column_name ) {
+		// thumbnail of WP 2.9
+		$thumbnail_id = get_post_meta( $post_id, '_thumbnail_id', true );
+		// image from gallery
+		$attachments = get_children( array('post_parent' => $post_id, 'post_type' => 'attachment', 'post_mime_type' => 'image') );
+		if ($thumbnail_id)
+			$thumb = wp_get_attachment_image( $thumbnail_id, array($hs_width, $hs_height), true );
+		elseif ($attachments) {
+			foreach ( $attachments as $attachment_id => $attachment ) {
+				$thumb = wp_get_attachment_image( $attachment_id, array($hs_width, $hs_height), true );
+			}
+		}
+		if ( isset($thumb) && $thumb ) {
+			print $thumb;
+		} else {
+			echo esc_html__('None', 'buzzblog');
+		}
+	}
+}
+// for posts
+add_filter( 'manage_posts_columns', 'buzzblog_fb_AddThumbColumn' );
+add_action( 'manage_posts_custom_column', 'buzzblog_fb_AddThumbValue', 10, 2 );
+// for pages
+add_filter( 'manage_pages_columns', 'buzzblog_fb_AddThumbColumn' );
+add_action( 'manage_pages_custom_column', 'buzzblog_fb_AddThumbValue', 10, 2 );
+}
+
+
+/*-----------------------------------------------------------------------------------*/
+/*	Pagination
+/*-----------------------------------------------------------------------------------*/
+if ( !function_exists( 'buzzblog_hs_pagination' ) ) {
+	function buzzblog_hs_pagination( $pages = '', $range = 1 ) {
+		$showitems = ($range * 2) + 1;
+
+		global $wp_query;
+		$paged = (int) $wp_query->query_vars['paged'];
+		if( empty($paged) || $paged == 0 ) $paged = 1;
+
+		if ( $pages == '' ) {
+			$pages = $wp_query->max_num_pages;
+			if( !$pages ) {
+				$pages = 1;
+			}
+		}
+		if ( 1 != $pages ) {
+			echo "<div class=\"pagination__posts\"><ul class=\"pagination\">";
+			if ( $paged > 1 ) echo "<li class='first'><a href='".get_pagenum_link(1)."'>".theme_locals("first")."</a></li>";
+			if ( $paged > 1 ) echo "<li class='prev'><a href='".get_pagenum_link($paged - 1)."'>".theme_locals("prev")."</a></li>";
+
+			for ( $i = 1; $i <= $pages-1; $i++ ) {
+				if (1 != $pages &&( !($i >= $paged+$range+1 || $i <= $paged-$range-1) || $pages <= $showitems )) {
+					echo ($paged == $i)? "<li class=\"active\"><a href='#'>".intval($i)."</a></li>":"<li><a href='".get_pagenum_link($i)."' class=\"inactive\">".intval($i)."</a></li>";
+				}
+			}
+
+			if ( $paged < $pages ) echo "<li class='next'><a href=\"".get_pagenum_link($paged + 1)."\">".theme_locals("next")."</a></li>"; 
+			if ( $paged < $pages ) echo "<li class='last'><a href='".get_pagenum_link($pages)."'>".theme_locals("last")."</a></li>";
+			echo "</ul></div>\n";
+		}
+	}
+}
+
+
+/*-----------------------------------------------------------------------------------*/
+/* Custom Comments Structure
+/*-----------------------------------------------------------------------------------*/
+if ( !function_exists( 'buzzblog_comment' ) ) {
+	function buzzblog_comment($comment, $args, $depth) {
+	     $GLOBALS['comment'] = $comment;
+		 extract( $args, EXTR_SKIP );
+$GLOBALS['depth'] = $depth;
+?>
+	   <li <?php comment_class('clearfix'); ?> id="li-comment-<?php comment_ID() ?>">
+
+	     	<div id="comment-<?php comment_ID(); ?>" class="comment-body clearfix">
+			<?php edit_comment_link(esc_html__('Edit', 'buzzblog')); ?>
+	      		<div class="wrapper">
+
+	  		      	<?php if ($comment->comment_approved == '0') : ?>
+	  		        	<em><?php echo theme_locals("your_comment") ?></em>
+	  		      	<?php endif; ?>	      	
+	  		     	<div class="extra-wrap">
+					
+					<div class="comment-author vcard">
+	  	         		<?php echo get_avatar( $comment->comment_author_email, $args['avatar_size'] ); ?>
+	  	      		
+					<?php printf(wp_kses_post('<h6 class="author">%1$s</h6>'), get_comment_author_link()); ?>
+					<?php printf(wp_kses_post('<span class="date">%1$s</span>'), get_comment_date($args['comment_date'])); ?>
+					<div class="clear"></div>
+					</div>
+	  		     		<?php comment_text() ?>	     	
+	  		     	</div>
+	  		    </div>
+		     	<div class="wrapper">
+				  	<div class="reply">
+						
+						<?php comment_reply_link( array_merge( $args, array( 'reply_text' => theme_locals("reply"), 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
+				   	</div>
+			 	</div>
+	    	</div>
+	<?php 
+	}
+}
+if ( !function_exists( 'buzzblog_pings' ) ) {
+function buzzblog_pings( $comment, $args, $depth ) {
+	$GLOBALS['comment'] = $comment;
+	extract( $args, EXTR_SKIP );
+	?>
+	<li <?php comment_class( empty( $args['has_children'] ) ? '' : 'parent' ) ?> id="comment-<?php comment_ID(); ?>">
+		<div class="ping-body" id="div-ping-<?php comment_ID(); ?>">
+
+			<div class="ping-author vcard">
+				<div class="ping-meta-wrapper">
+					<div class="ping-meta">
+						<?php 
+						printf( wp_kses_post( '<h6 class="fn">%1$s %2$s</h6>'), get_comment_author_link(), edit_comment_link(esc_html__('Edit', 'buzzblog')) );
+						printf( wp_kses_post( '<span class="date">%1$s</span>'), get_comment_date($args['comment_date']) );
+						?>
+					</div><!-- .ping-meta -->
+				</div><!-- .ping-meta-wrapper -->
+			</div><!-- .ping-author -->
+
+			<div class="ping-text">
+				<?php 
+				
+				comment_text(); ?>
+			</div><!-- .ping-text -->
+
+		</div><!-- .ping-body -->
+	
+	<?php
+} 
+}// end buzzblog_pings
+//Limited Number of Tags
+add_filter('term_links-post_tag','buzzblog_limit_tags');
+function buzzblog_limit_tags($terms) {
+return array_slice($terms,0,2,true);
+}
+
+//Post gallery
+
+function buzzblog_pfui_admin_init() {
+	$post_formats = get_theme_support('post-formats');
+	if (!empty($post_formats[0]) && is_array($post_formats[0])) {
+		if (in_array('gallery', $post_formats[0])) {
+			add_action('save_post', 'buzzblog_pfui_format_gallery_save_post');
+		}
+	}
+}
+add_action('admin_init', 'buzzblog_pfui_admin_init');
+
+// we aren't really adding meta boxes here,
+// but this gives us the info we need to get our stuff in.
+function buzzblog_pfui_add_meta_boxes($post_type) {
+	if (post_type_supports($post_type, 'post-formats') && current_theme_supports('post-formats')) {
+		// assets
+		wp_enqueue_script('buzzblog-post-formats-ui', trailingslashit(get_template_directory_uri()).'includes/post-gallery/js/admin.js', array('jquery'), '1.5');
+		wp_enqueue_style('buzzblog-post-formats-ui', trailingslashit(get_template_directory_uri()).'includes/post-gallery/css/admin.css', array(), '1.5', 'screen');
+
+		wp_localize_script(
+			'buzzblog-post-formats-ui',
+			'buzzblog_pfui_post_format',
+			array(
+				'loading'      => esc_html__('Loading...', 'buzzblog'),
+				'wpspin_light' => admin_url('images/wpspin_light.gif'),
+				'media_title'  => esc_html__('Pick Gallery Images', 'buzzblog'),
+				'media_button' => esc_html__('Add Image(s)', 'buzzblog')
+			)
+		);
+
+	}
+}
+add_action('add_meta_boxes', 'buzzblog_pfui_add_meta_boxes');
+
+
+function buzzblog_pfui_format_gallery_save_post($post_id) {
+	if (!defined('XMLRPC_REQUEST') && isset($_POST['_format_gallery_images'])) {
+		global $post;
+		if( $_POST['_format_gallery_images'] !== '' ) {
+			$images = array_filter(explode(',', sanitize_text_field($_POST['_format_gallery_images'])));
+		} else {
+			$images = array();
+		}
+		update_post_meta($post_id, '_format_gallery_images', $images);
+	}
+}
+
+function buzzblog_pfui_gallery_preview() {
+	if (empty($_POST['id']) || !($post_id = intval($_POST['id']))) {
+		exit;
+	}
+	global $post;
+	$post->ID = $post_id;
+	ob_start();
+	$html = ob_get_clean();
+	header('Content-type: text/javascript');
+	echo json_encode(compact('html'));
+	exit;
+}
+add_action('wp_ajax_buzzblog_pfui_gallery_preview', 'buzzblog_pfui_gallery_preview');
+
+function buzzblog_pfui_post_has_gallery($post_id = null) {
+	if (empty($post_id)) {
+		$post_id = get_the_ID();
+	}
+	$images = new WP_Query(array(
+		'post_parent' => $post_id,
+		'post_type' => 'attachment',
+		'post_status' => 'inherit',
+		'posts_per_page' => 1, // -1 to show all
+		'post_mime_type' => 'image%',
+		'orderby' => 'menu_order',
+		'order' => 'ASC'
+	));
+	return (bool) $images->post_count;
+}
+
+?>

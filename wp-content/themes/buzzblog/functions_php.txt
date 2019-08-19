@@ -1,0 +1,835 @@
+<?php
+	if ( !function_exists('buzzblog_theme_setup')) {
+		function buzzblog_theme_setup() {
+		load_theme_textdomain( 'buzzblog', get_template_directory() . '/languages' );
+        require_once get_template_directory() . '/admin-panel/admin-init.php';	
+        add_theme_support( 'title-tag' );
+		add_theme_support( 'automatic-feed-links' );
+			// removes detailed login error information for security
+	add_filter('login_errors',create_function('$buzzblog_a', "return null;"));
+
+	// Post Formats
+	$buzzblog_formats = array( 
+				'aside', 
+				'gallery', 
+				'link', 
+				'image', 
+				'quote', 
+				'audio',
+				'video');
+	add_theme_support( 'post-formats', $buzzblog_formats ); 
+	add_post_type_support( 'post', 'post-formats' );
+	
+			/*  Post Thumbnails  */
+	if ( function_exists( 'add_image_size' ) ) {
+
+		add_theme_support( 'post-thumbnails' );
+
+		add_image_size( 'buzzblog-standard-large', 1080, 715 );		// Large Blog Image
+		add_image_size( 'buzzblog-masonry', 483, 500 );		// masonry Image
+		add_image_size( 'buzzblog-gallery-thumb', 360, 506 );			// gallery-thumb Image
+		add_image_size( 'buzzblog-post-gallery-tall', 600, 800 );			// post gallery thumb Image
+		add_image_size( 'buzzblog-recent-news-thumb', 263, 263 );	
+	}
+
+	if ( function_exists( 'register_nav_menus' ) ) {
+	  	register_nav_menus(
+	  		array(
+	  		  'primary-menu' => esc_html__( 'Primary Menu', 'buzzblog' ),
+			  'top-menu' => esc_html__( 'Top Menu', 'buzzblog' ),
+			  'mobile_menu' => esc_html__( 'Mobile Menu', 'buzzblog' ),
+	  		  'footer_menu' => esc_html__( 'Footer Menu', 'buzzblog' )
+	  		)
+	  	);
+	}
+
+function buzzblog_author_posts( $link )
+{
+return str_replace( 'rel="author"', 'rel="author" class="url"', $link );
+}
+add_filter( 'the_author_posts_link', 'buzzblog_author_posts' );
+
+}
+}
+add_action('after_setup_theme', 'buzzblog_theme_setup');
+function buzzblog_content_width() {
+	$GLOBALS['content_width'] = apply_filters( 'buzzblog_content_width', 800 );
+}
+add_action( 'after_setup_theme', 'buzzblog_content_width', 0 );
+
+//Additional function
+require_once get_template_directory() . '/includes/theme-function.php';
+include_once get_template_directory() . '/includes/locals.php';
+// Add the pagemeta
+include_once get_template_directory() . '/includes/theme-pagemeta.php';
+// Add the postmeta
+include_once get_template_directory() . '/includes/theme-postmeta.php';
+
+function buzzblog_elegance_widgets_init() {
+	
+	// Sidebar Widget
+	// Location: the sidebar
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Sidebar', 'buzzblog'),
+		'id' 					=> 'hs_main_sidebar',
+		'description'   => esc_html__( 'Located at the right/left side of the pages.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="widget %2$s"><div class="widget-content">',
+		'after_widget' => '</div><span></span></div>',
+		'before_title' => '<h4 class="subtitle fancy">',
+		'after_title' => '<span></span></h4>',
+	));
+// Top 0 Widget Area
+	// Location: at the top of the header
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Top 0', 'buzzblog'),
+		'id' 					=> 'hs_top_0',
+		'description'   => esc_html__( 'Located at the top of the header.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="top-widget-full %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<div class="top_heading">',
+		'after_title' => '</div>',
+	));
+	// Top 1 Widget Area
+	// Location: at the top of the header
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Top 1', 'buzzblog'),
+		'id' 					=> 'hs_top_1',
+		'description'   => esc_html__( 'Located at the top left side of the header.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="top-widget-left %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<div class="top_heading">',
+		'after_title' => '</div>',
+	));
+	
+	
+	// Top 2 Widget Area
+	// Location: at the top of the header
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Top 2', 'buzzblog'),
+		'id' 					=> 'hs_top_2',
+		'description'   => esc_html__( 'Located at the top right side of the header.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="top-widget-right %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<div class="top_heading">',
+		'after_title' => '</div>',
+	));
+	
+	// Bottom 1 Widget Area
+	// Location: at the bottom of the footer
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Bottom 1', 'buzzblog'),
+		'id' 					=> 'hs_bottom_1',
+		'description'   => esc_html__( 'Located at the bottom of pages.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="hs_bottom_1 %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<div class="footer_heading"><h4>',
+		'after_title' => '</h4></div>',
+	));
+	
+	
+		// Bottom 2 Widget Area
+	// Location: at the bottom of the footer
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Bottom 2', 'buzzblog'),
+		'id' 					=> 'hs_bottom_2',
+		'description'   => esc_html__( 'Located at the bottom of pages.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="hs_bottom_2 %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<div class="footer_heading"><h4>',
+		'after_title' => '</h4></div>',
+	));
+	
+			// Bottom 3 Widget Area
+	// Location: at the bottom of the footer
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Bottom 3', 'buzzblog'),
+		'id' 					=> 'hs_bottom_3',
+		'description'   => esc_html__( 'Located at the bottom of pages.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="hs_bottom_3 %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<div class="footer_heading"><h4>',
+		'after_title' => '</h4></div>',
+	));
+
+			// Instagram Widget Area
+	// Location: at the bottom of the footer
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Instagram', 'buzzblog'),
+		'id' 					=> 'hs_instagram_area',
+		'description'   => esc_html__( 'Located at the bottom of pages.', 'buzzblog'),
+		'before_widget' => '<div class="instagram-widget %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<div class="instagram_footer_heading"><h4>',
+		'after_title' => '</h4></div>',
+	));
+				// Bottom 4 Widget Area
+	// Location: at the bottom of the footer
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Bottom 4', 'buzzblog'),
+		'id' 					=> 'hs_bottom_4',
+		'description'   => esc_html__( 'Located below instagram widget area.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="hs_bottom_4 %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<div class="footer_heading"><h4>',
+		'after_title' => '</h4></div>',
+	));
+	// Under header Widget
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Under header', 'buzzblog'),
+		'id' 					=> 'hs_under_header',
+		'description'   => esc_html__( 'Located below the main menu.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="widget_underheader %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '',
+		'after_title' => '',
+	));
+			// Under footer logo
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Under footer logo', 'buzzblog'),
+		'id' 					=> 'hs_under_footer_logo',
+		'description'   => esc_html__( 'Located below the footer logo.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="widget_underfooterlogo %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '',
+		'after_title' => '',
+	));
+		// Sidepanel Widget
+	// Location: the sidepanel
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Side panel', 'buzzblog'),
+		'id' 					=> 'hs_side_panel',
+		'description'   => esc_html__( 'It is a hidden panel located at the left side of page.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="widget %2$s"><div class="widget-content">',
+		'after_widget' => '</div><span></span></div>',
+		'before_title' => '<h4 class="subtitle fancy">',
+		'after_title' => '<span></span></h4>',
+	));
+	// Ads
+	// Location: Top bar
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Ads', 'buzzblog'),
+		'id' 					=> 'hs_ads',
+		'description'   => esc_html__( 'It is a ads widget area.', 'buzzblog'),
+		'before_widget' => '<div class="ads-widget"><div class="widget-ads-content">',
+		'after_widget' => '</div></div>',
+		'before_title' => '',
+		'after_title' => '',
+	));
+		if ( function_exists( 'is_woocommerce' ) ) {
+		// Woocommerce widget
+	register_sidebar(array(
+		'name'					=> esc_html__( 'Woocommerce Sidebar', 'buzzblog'),
+		'id' 					=> 'hs_woocommerce_sidebar',
+		'description'   => esc_html__( 'Located at the right side of pages.', 'buzzblog'),
+		'before_widget' => '<div id="%1$s" class="woocommerce-widget widget %2$s"><div class="widget-content">',
+		'after_widget' => '</div></div>',
+		'before_title' => '<h4 class="subtitle">',
+		'after_title' => '</h4>',
+	));
+	}
+}
+/** Register sidebars by running buzzblog_elegance_widgets_init() on the widgets_init hook. */
+add_action( 'widgets_init', 'buzzblog_elegance_widgets_init' );
+
+//Loading jQuery and Scripts
+require_once get_template_directory() . '/includes/theme-scripts.php';
+//Loading widgets
+require_once get_template_directory() . '/includes/register-widgets.php';
+include_once get_template_directory() . '/includes/widgets-visibility.php';
+function buzzblog_admin_css(){ 
+global $buzzblog_options;
+echo '<style type="text/css">';
+
+ if($buzzblog_options['hs_container_size']) {
+				echo '@media (min-width: 1200px) {.container{max-width: '.$buzzblog_options['hs_container_size'].'px;}}';
+				}else{ 
+				echo '@media (min-width: 1200px) {.container{max-width: 1170px;}}';
+				}
+if($buzzblog_options['main_layout']== 'boxed'){
+$val = intval($buzzblog_options['hs_container_size']) + 30;
+echo '.boxed .main-holder, .boxed .buzzblog-cookie-banner-wrap {max-width: '.$val.'px;}';
+}
+ if($buzzblog_options['content_around_shadow'] == 'no') {
+echo 'article, .widget, .grid-block, .list-post .block .list_post_content, .related-posts, .most-commented-section, .comment-body, .slideshow {-webkit-box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);-moz-box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);}';
+}
+ if($buzzblog_options['header_logo_width']) {
+				echo '.logo img {width:'.$buzzblog_options['header_logo_width'].'px;}';
+				}else{echo '.logo img {width:400px;}';};
+ if($buzzblog_options['footer_logo_width']) {
+				echo '.footer-logo .logo img {width:'.$buzzblog_options['footer_logo_width'].'px;}';
+				}else{echo '.footer-logo .logo img {width:400px;}';};
+ if($buzzblog_options['bgmenu_color']) {
+				echo '#primary, .nav__mobile, .top-container .sticky-nav, .top-container-normal, .top-container .sticky-nav.navbar-fixed-top, .navbar-fixed-top {background:'.$buzzblog_options['bgmenu_color'].'}';
+				}else{echo '#primary, .nav__mobile {}';};
+ if($buzzblog_options['lineabove_color']) {
+				echo '#primary {border-top-color:'.$buzzblog_options['lineabove_color'].'}';
+				}else{echo '#primary {border-top-color:#222222;}';}
+ if($buzzblog_options['linebelow_color']) {
+				echo '#primary {border-bottom-color:'.$buzzblog_options['linebelow_color'].'}';
+				}else{echo '#primary {border-bottom-color:#222222;}';}
+ if($buzzblog_options['lineabove_border_thick']) {
+				echo '#primary {border-top-width:'.$buzzblog_options['lineabove_border_thick'].'px;}';
+				}else{echo '#primary {border-top-width:0px;}';}
+ if($buzzblog_options['linebelow_border_thick']) {
+				echo '#primary {border-bottom-width:'.$buzzblog_options['linebelow_border_thick'].'px;}';
+				}else{echo '#primary {border-bottom-width:0px;}';}
+ if($buzzblog_options['footerline_color']) {
+				echo '.lowestfooter {border-top-color:'.$buzzblog_options['footerline_color'].'}';
+				}else{echo '.lowestfooter {border-top-color:#222222;}';}
+			if(isset($buzzblog_options['overlay_color']['rgba'])) {
+				echo '.header-overlay {background:'.$buzzblog_options['overlay_color']['rgba'].'}';
+				}else{echo '.header-overlay {background: rgba(255,255,255,0.6);}';}
+				if(isset($buzzblog_options['post_overlay_color']['rgba'])) {
+				echo '.post-header-overlay {background:'.$buzzblog_options['post_overlay_color']['rgba'].'}';
+				}else{echo '.post-header-overlay {background: rgba(0,0,0,0.19);}';}
+				if(isset($buzzblog_options['mainmenu_submenu_border_color']['border-top'])) {
+				echo '#primary-menu ul li:not(.buzzblog-widget-menu) > ul {top:-'.$buzzblog_options['mainmenu_submenu_border_color']['border-top'].'}';
+				} 
+				
+						if(isset($buzzblog_options['slideshow_overlay_color']['rgba'])) {
+				echo '.slideshow-desc {background: '.$buzzblog_options['slideshow_overlay_color']['rgba'].'}';
+				}else{echo '.slideshow-desc {background: rgba(255,255,255,0.94);}';}
+//body background
+			if ($buzzblog_options['body_background'] != '') {
+			echo 'body { ';
+				if (isset($buzzblog_options['body_background']['background-image']) && !empty($buzzblog_options['body_background']['background-image'])) {
+					echo 'background-image:url("'.$buzzblog_options['body_background']['background-image']. '"); background-repeat:'.$buzzblog_options['body_background']['background-repeat'].'; background-position:'.$buzzblog_options['body_background']['background-position'].';  background-attachment:'.$buzzblog_options['body_background']['background-attachment'].'; background-size:'.$buzzblog_options['body_background']['background-size'].';';
+				}
+				if($buzzblog_options['body_background']['background-color'] != '') {
+					echo 'background-color:'.$buzzblog_options['body_background']['background-color']. ';';
+				}
+				echo '}';
+			}
+
+		echo esc_attr( $buzzblog_options['custom_css']); 
+//Global-accent colors	
+			if($buzzblog_options['global_color']) {
+				echo '.post_category:after, .hs_aboutme_text span, .slide-category span, .widget-content h4.subtitle span, .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus, .title-section span, .heading-entrance span {border-top-color:'.$buzzblog_options['global_color'].'}';
+				}else{echo '.post_category:after, .hs_aboutme_text span, .widget-content h4.subtitle span, .slide-category span, .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus, .title-section span, .heading-entrance span {border-top-color:#222222}';};
+				
+			if($buzzblog_options['global_color']) {
+				echo '.error404-holder_num, .twitter-list i, .hercules-likes:hover:before, .hercules-likes.active:before {color:'.$buzzblog_options['global_color'].'}';
+				}else{echo '.error404-holder_num {color:#222222}';};
+			
+			if($buzzblog_options['global_color']) {
+				echo '.owl-carousel .owl-dots .owl-dot.active span, .owl-carousel .owl-dots .owl-dot:hover span, .link-image a p, .widget_calendar tbody a, .text-highlight, div.jp-play-bar, div.jp-volume-bar-value, .progress .bar, .buzzblog-cart .badge, .mobile-shopping-cart .badge {background:'.$buzzblog_options['global_color'].'}';
+				}else{echo '.widget_calendar tbody a, .text-highlight, div.jp-play-bar, div.jp-volume-bar-value, .progress .bar {background:#222222}';};
+
+//side panel
+if($buzzblog_options['side-panel-link-color']['active']) {
+				echo '.menu-mobile ul li.current-menu-item a, .menu-mobile ul li.current-menu-parent > a { color:'.$buzzblog_options['side-panel-link-color']['active'].'}';
+				}				
+//Navigation		
+
+if($buzzblog_options['mainmenu_submenu_link_color']['hover']) {
+				echo '#primary-menu ul li:hover > a, #primary-menu .has-mega-column > .sub-menu a:hover, #primary-menu .has-mega-column > .sub-menu > .columns-sub-item > a:hover { color:'.$buzzblog_options['mainmenu_submenu_link_color']['hover'].'}';
+				}else{echo '#primary-menu ul li:hover > a, #primary-menu .has-mega-column > .sub-menu a:hover, #primary-menu .has-mega-column > .sub-menu > .columns-sub-item > a:hover { color:#bbbbbb}';};
+
+if($buzzblog_options['mainmenu_submenu_link_color']['active']) {
+				echo '#primary-menu ul li.current-menu-item > a, #primary-menu .has-mega-column > .sub-menu .current-menu-item > a { color:'.$buzzblog_options['mainmenu_submenu_link_color']['active'].'}';
+				}else{echo '#primary-menu ul li.current-menu-item > a, #primary-menu .has-mega-column > .sub-menu .current-menu-item > a { color:#bbbbbb}';};				
+
+if($buzzblog_options['mainmenu_submenu_button_color']['regular']) {
+				echo '#primary-menu li ul li a, #primary-menu .has-mega-column > .sub-menu a { background:'.$buzzblog_options['mainmenu_submenu_button_color']['regular'].'}';
+				}else{echo '#primary-menu li ul li a, #primary-menu .has-mega-column > .sub-menu a { background:#ffffff}';
+				};	
+				
+if($buzzblog_options['mainmenu_submenu_button_color']['hover']) {
+				echo '#primary-menu ul li:hover > a, #primary-menu .has-mega-column > .sub-menu a:hover {background:'.$buzzblog_options['mainmenu_submenu_button_color']['hover'].'}';
+				}else{echo '#primary-menu ul li:hover > a, #primary-menu .has-mega-column > .sub-menu a:hover {background:#ffffff}';};	
+				
+if($buzzblog_options['mainmenu_submenu_button_color']['active']) {
+				echo '#primary-menu ul li.current-menu-item > a, #primary-menu .has-mega-column > .sub-menu .current-menu-item > a {background:'.$buzzblog_options['mainmenu_submenu_button_color']['active'].'}';
+				}else{echo '#primary-menu ul li.current-menu-item > a, #primary-menu .has-mega-column > .sub-menu .current-menu-item > a {background:#ffffff}';};
+				
+if($buzzblog_options['mainmenu_current_button_color']['hover']) {
+				echo '#primary-menu > li > a:hover, #primary-menu > li.current-menu-item > a, #primary-menu > li.current-menu-ancestor > a, #primary-menu li:hover > a { color:'.$buzzblog_options['mainmenu_current_button_color']['hover'].'}';
+				}else{echo '#primary-menu > li > a:hover, #primary-menu > li.current-menu-item > a, #primary-menu > li.current-menu-ancestor > a, #primary-menu li:hover > a { color:#bbbbbb;}';};		
+				
+if($buzzblog_options['mainmenu_current_button_color']['active']) {
+				echo '#primary-menu > li.current-menu-item > a, #primary-menu > li.current-menu-ancestor > a { color:'.$buzzblog_options['mainmenu_current_button_color']['active'].'}';
+				}else{echo '#primary-menu > li.current-menu-item > a, #primary-menu > li.current-menu-ancestor > a { color:#bbbbbb;}';};
+				
+if($buzzblog_options['mainmenu_button_bg_color']['regular'] && $buzzblog_options['mainmenu_button_bg_color_transparent'] != 'yes') {
+				echo '#primary-menu > li > a {background:'.$buzzblog_options['mainmenu_button_bg_color']['regular'].'}';
+  }else{echo '#primary-menu > li > a {background:transparent;}';};
+  
+if($buzzblog_options['mainmenu_button_bg_color']['hover'] && $buzzblog_options['mainmenu_button_bg_color_transparent'] != 'yes') {
+				echo '#primary-menu > li > a:hover, #primary-menu > li.current-menu-item > a, #primary-menu > li.current-menu-ancestor > a, #primary-menu li:hover > a { background:'.$buzzblog_options['mainmenu_button_bg_color']['hover'].'}';
+				}else{echo '#primary-menu > li > a:hover, #primary-menu > li.current-menu-item > a, #primary-menu > li.current-menu-ancestor > a, #primary-menu li:hover > a { background:transparent;}';};	
+
+if($buzzblog_options['mainmenu_button_bg_color']['active'] && $buzzblog_options['mainmenu_button_bg_color_transparent'] != 'yes') {
+				echo '#primary-menu > li.current-menu-item > a, #primary-menu > li.current-menu-ancestor > a { background:'.$buzzblog_options['mainmenu_button_bg_color']['active'].'}';
+				}else{echo '#primary-menu > li.current-menu-item > a, #primary-menu > li.current-menu-ancestor > a { background:transparent;}';};	
+
+if($buzzblog_options['mainmenu_submenu_bg_color']) {
+				echo '#primary-menu .sub-menu, #primary-menu .has-mega-sub-menu .mega-sub-menu, #primary-menu .has-mega-column > .sub-menu {background:'.$buzzblog_options['mainmenu_submenu_bg_color'].'}';
+				}else{echo '#primary-menu .sub-menu, #primary-menu .has-mega-sub-menu .mega-sub-menu, #primary-menu .has-mega-column > .sub-menu {background:#ffffff;}';};	
+
+if($buzzblog_options['mainmenu_button_active_border_color']) {
+				echo '#primary-menu > li.current-menu-ancestor, #primary-menu > li:hover, #primary-menu > li.current_page_item, #primary-menu > li.current-menu-item {border-top: 1px solid '.$buzzblog_options['mainmenu_button_active_border_color'].';}';
+				}else{echo '#primary-menu > li.current-menu-ancestor, #primary-menu > li:hover, #primary-menu > li.current_page_item, #primary-menu > li.current-menu-item {border-top: 1px solid #000000;}';};
+				
+if($buzzblog_options['mainmenu_submenu_button_border_bottom_color']) {
+				echo '#primary-menu ul li a {border-color:'.$buzzblog_options['mainmenu_submenu_button_border_bottom_color'].'}';
+				}else{echo '#primary-menu ul li a {border-bottom-color:#eeeeee;}';};	
+// Top menu
+				if(isset($buzzblog_options['topmenu_submenu_bg_color']['rgba'])) {
+				echo '#top-menu ul {background:'.$buzzblog_options['topmenu_submenu_bg_color']['rgba'].'}';
+				}else{echo '#top-menu ul {background:#ffffff;}';};	
+				
+if($buzzblog_options['topmenu_submenu_button_border_bottom_color']) {
+				echo '#top-menu ul a, #top-menu .current_page_item ul a, #top-menu ul .current_page_item a, #top-menu .current-menu-item ul a, #top-menu ul .current-menu-item a, #top-menu li:hover > ul a {border-color:'.$buzzblog_options['topmenu_submenu_button_border_bottom_color'].'}';
+				}else{echo '#top-menu ul a, #top-menu .current_page_item ul a, #top-menu ul .current_page_item a, #top-menu .current-menu-item ul a, #top-menu ul .current-menu-item a, #top-menu li:hover > ul a {border-bottom-color:#eeeeee;}';};
+if($buzzblog_options['top_container_bg_color']) {
+				echo '.top-border {background:'.$buzzblog_options['top_container_bg_color'].'}';
+				}else{echo '.top-border {background:#ffffff;}';};	
+// modern post title color
+				if($buzzblog_options['modern_post_meta_text_color']) {
+				echo '.modern-layout .meta-space-top, .modern-layout .post_category a, .modern-layout .meta-space-top {color:'.$buzzblog_options['modern_post_meta_text_color'].'}';
+				}else{echo '.modern-layout .meta-space-top, .modern-layout .post_category a, .modern-layout .meta-space-top {color:#000000;}';};
+ if($buzzblog_options['modern_post_title_text_color']) {
+				echo '.modern-layout h1.post-title {color:'.$buzzblog_options['modern_post_title_text_color'].'}';
+				}else{echo '.modern-layout h1.post-title {color:#000000;}';};
+// Featured badge color
+ if($buzzblog_options['featured_badge_text_color']) {
+				echo '.ribbon-featured {color:'.$buzzblog_options['featured_badge_text_color'].'}';
+				}else{echo '.ribbon-featured {color:#ffffff;}';};	
+ if($buzzblog_options['featured_badge_bg_color']) {
+				echo '.ribbon-featured {background:'.$buzzblog_options['featured_badge_bg_color'].'}';
+				}else{echo '.ribbon-featured {background:#000000;}';};				
+
+				if ($buzzblog_options['buttons_color']['hover']) { 
+echo '.category-filter ul li.current-cat a, .page-numbers .current { color: '.$buzzblog_options['buttons_color']['hover'].'}';
+}
+if ($buzzblog_options['buttons_border_color']['regular']) { 
+			echo '.footer .instagram-footer .readmore-button a, a.btn, a.comment-reply-link, input[type="submit"], .tagcloud a, .category-filter ul li a, .woocommerce #review_form #respond .form-submit input, .woocommerce .widget_price_filter .price_slider_amount .button, .woocommerce div.product form.cart .button, .woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button { border-color: '.$buzzblog_options['buttons_border_color']['regular'].'}';
+			}else{echo 'a.btn, a.comment-reply-link, input[type="submit"], .tagcloud a, .category-filter ul li a, .woocommerce #review_form #respond .form-submit input, .woocommerce .widget_price_filter .price_slider_amount .button, .woocommerce div.product form.cart .button, .woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button { border-color: #222222;}';}
+
+if ($buzzblog_options['buttons_border_color']['hover']) { 
+			echo '.page-numbers .current, .page-numbers li a:hover, .footer .instagram-footer .readmore-button a:hover, a.comment-reply-link:hover, input[type="submit"]:hover, .btn-default.active, .btn-default.focus, .btn-default:active, .btn-default:focus, .btn-default:hover, .open > .dropdown-toggle.btn-default,.tagcloud a:hover, .category-filter ul li.current-cat a, .category-filter ul li a:hover, .woocommerce #review_form #respond .form-submit input:hover, .woocommerce .widget_price_filter .price_slider_amount .button:hover, .woocommerce div.product form.cart .button:hover, .woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover { border-color: '.$buzzblog_options['buttons_border_color']['hover'].'}';
+			}else{echo 'a.comment-reply-link:hover, input[type="submit"]:hover, .btn-default.active, .btn-default.focus, .btn-default:active, .btn-default:focus, .btn-default:hover, .open > .dropdown-toggle.btn-default,.tagcloud a:hover, .category-filter ul li.current-cat a, .category-filter ul li a:hover, .woocommerce #review_form #respond .form-submit input:hover, .woocommerce .widget_price_filter .price_slider_amount .button:hover, .woocommerce div.product form.cart .button:hover, .woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover { border-color: #222222;}';}
+			
+if ($buzzblog_options['buttons_background_color']['regular']) { 
+			echo '.footer .instagram-footer .readmore-button a, a.btn, a.comment-reply-link, input[type="submit"], .tagcloud a, .category-filter ul li a, .woocommerce #review_form #respond .form-submit input, .woocommerce .widget_price_filter .price_slider_amount .button, .woocommerce div.product form.cart .button, .woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button { background: '.$buzzblog_options['buttons_background_color']['regular'].'}';
+			}else{echo 'a.btn, a.comment-reply-link, input[type="submit"], .tagcloud a, .category-filter ul li a, .woocommerce #review_form #respond .form-submit input, .woocommerce .widget_price_filter .price_slider_amount .button, .woocommerce div.product form.cart .button, .woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button { background: #ffffff;}';}
+
+if ($buzzblog_options['buttons_background_color']['hover']) { 
+			echo '.page-numbers .current, .page-numbers li a:hover, .footer .instagram-footer .readmore-button a:hover, a.comment-reply-link:hover, input[type="submit"]:hover, .btn-default.active, .btn-default.focus, .btn-default:active, .btn-default:focus, .btn-default:hover, .open > .dropdown-toggle.btn-default,.tagcloud a:hover, .category-filter ul li.current-cat a, .category-filter ul li a:hover, .woocommerce #review_form #respond .form-submit input:hover, .woocommerce .widget_price_filter .price_slider_amount .button:hover, .woocommerce div.product form.cart .button:hover, .woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover { background: '.$buzzblog_options['buttons_background_color']['hover'].'}';
+			}else{echo 'a.comment-reply-link:hover, input[type="submit"]:hover, .btn-default.active, .btn-default.focus, .btn-default:active, .btn-default:focus, .btn-default:hover, .open > .dropdown-toggle.btn-default,.tagcloud a:hover, .category-filter ul li.current-cat a, .category-filter ul li a:hover, .woocommerce #review_form #respond .form-submit input:hover, .woocommerce .widget_price_filter .price_slider_amount .button:hover, .woocommerce div.product form.cart .button:hover, .woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover { background: #222222;}';}			
+			
+echo '</style>';
+	 }
+add_action( 'wp_head', 'buzzblog_admin_css' ); 
+
+add_filter('the_excerpt', 'do_shortcode');
+	// Threaded Comments
+	if(!function_exists('buzzblog_enable_threaded_comments')) {
+		function buzzblog_enable_threaded_comments()
+		{
+			if (!is_admin()) {
+				if (is_singular() AND comments_open() AND (get_option('thread_comments') == 1)) {
+					wp_enqueue_script('comment-reply');
+				}
+			}	
+		}
+		add_action('get_header', 'buzzblog_enable_threaded_comments');
+	}
+
+// Open Graph
+
+function buzzblog_add_opengraph() {
+	global $post; // Ensures we can use post variables outside the loop
+
+	// Start with some values that don't change.
+	echo "<meta property='og:site_name' content='". get_bloginfo('name') ."' />"; // Sets the site name to the one in your WordPress settings
+	echo "<meta property='og:url' content='" . get_permalink() . "' />"; // Gets the permalink to the post/page
+
+	if (is_singular()) { // If we are on a blog post/page
+        echo "<meta property='og:title' content='" . get_the_title() . "' />"; // Gets the page title
+        echo "<meta property='og:type' content='article' />"; // Sets the content type to be article.
+    } elseif(is_front_page() or is_home()) { // If it is the front page or home page
+    	echo "<meta property='og:title' content='" . get_bloginfo("name") . "' />"; // Get the site title
+    	echo "<meta property='og:type' content='website'/>"; // Sets the content type to be website.
+    }
+
+	if(has_post_thumbnail() && is_singular()) { // If the post has a featured image.
+		$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
+		echo "<meta property='og:image' content='" . esc_url( $thumbnail[0] ) . "' />"; // If it has a featured image, then display this for Facebook
+	} 
+
+}
+
+$buzzblog_using_jetpack_publicize = ( class_exists( 'Jetpack' ) && in_array( 'publicize', Jetpack::get_active_modules()) ) ? true : false;
+
+if ( !defined('WPSEO_VERSION') && !class_exists('NY_OG_Admin') && $buzzblog_using_jetpack_publicize == false) {
+	add_action( 'wp_head', 'buzzblog_add_opengraph', 5 );
+}
+add_filter( 'the_content_more_link', 'buzzblog_modify_read_more_link' );
+function buzzblog_modify_read_more_link() {
+return '<div class="clear"></div><div class="viewpost-button"><a class="button" href="' . get_permalink() . '">'.theme_locals("continue_reading").'</a></div>';
+}
+// AUTHOR SOCIAL LINKS
+function buzzblog_contactmethods( $contactmethods ) {
+
+	$contactmethods['twitter']   = esc_html__('Twitter URL', 'buzzblog');
+	$contactmethods['facebook']  = esc_html__('Facebook URL', 'buzzblog');
+	$contactmethods['google']    = esc_html__('Google Plus URL', 'buzzblog');
+	$contactmethods['tumblr']    = esc_html__('Tumblr URL', 'buzzblog');
+	$contactmethods['instagram'] = esc_html__('Instagram URL', 'buzzblog');
+	$contactmethods['pinterest'] = esc_html__('Pinterest URL', 'buzzblog');
+	$contactmethods['snapchat'] = esc_html__('Snapchat URL', 'buzzblog');
+
+	return $contactmethods;
+}
+add_filter('user_contactmethods','buzzblog_contactmethods',10,1);
+
+// Custom login form
+function buzzblog_login_logo() {
+if(buzzblog_getVariable('login_form_logo','url')){
+?>
+<style type="text/css">
+.login h1 a {
+    background-image: url(<?php echo esc_url( buzzblog_getVariable('login_form_logo','url'));?>)!important;
+    width: 100%!important; 
+    margin: 0 auto 25px!important;
+    padding: 0!important;
+    height: 67px!important;
+    background-size: 320px!important;
+}
+
+body.login {
+    background-image:url(<?php echo esc_url( buzzblog_getVariable('login_form_image_bg','url')); ?>)!important;
+    background: no-repeat #fff;
+    background-origin: unset!important;
+    background-clip: unset!important;
+    background-size: cover!important;
+    background-attachment: scroll!important;
+}
+
+.login form{box-shadow:unset!important;border:1px solid #222!important}.login .message{border-left:4px solid #fff!important;background-color:#FFF!important;box-shadow:unset!important}.login form .input,.login form input[type=checkbox],.login input[type=text]{background:#fff!important}input[type=checkbox],input[type=color],input[type=date],input[type=datetime-local],input[type=datetime],input[type=email],input[type=month],input[type=number],input[type=password],input[type=radio],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],select,textarea{border-top:0!important;border-left:0!important;border-right:0!important;border-bottom:1px solid #ddd!important;box-shadow:unset!important;background-color:#FFF!important}.wp-core-ui .button-primary{text-shadow:0 0 0 #fff,0 0 0 #fff,0 0 0 #fff,0 0 0 #fff!important;background:#fff!important;border-color:#222!important;box-shadow:unset!important;color:#222!important;text-decoration:none!important;border-radius:0!important}input[type=checkbox]:focus,input[type=color]:focus,input[type=date]:focus,input[type=datetime-local]:focus,input[type=datetime]:focus,input[type=email]:focus,input[type=month]:focus,input[type=number]:focus,input[type=password]:focus,input[type=radio]:focus,input[type=search]:focus,input[type=tel]:focus,input[type=text]:focus,input[type=time]:focus,input[type=url]:focus,input[type=week]:focus,select:focus,textarea:focus{border-color:#ddd!important;box-shadow:unset!important}.wp-core-ui .button-primary.focus,.wp-core-ui .button-primary.hover,.wp-core-ui .button-primary:focus,.wp-core-ui .button-primary:hover{background:#222!important;border-color:#222!important;box-shadow:unset!important;color:#FFF!important}.login #backtoblog a:hover,.login #nav a:hover,.login h1 a:hover{color:#222!important}
+    </style>
+<?php }}
+add_action( 'login_enqueue_scripts', 'buzzblog_login_logo' );
+
+function buzzblog_login_logo_url() {
+    return esc_url( home_url( '/' ) );
+}
+add_filter( 'login_headerurl', 'buzzblog_login_logo_url' );
+
+function buzzblog_login_logo_url_title() {
+    return '';
+}
+add_filter( 'login_headertitle', 'buzzblog_login_logo_url_title' );
+// Custom login form
+
+//Plugin Activation
+require_once get_template_directory() . '/includes/register-plugins.php';
+require_once get_template_directory() . '/includes/aq_resizer.php';
+
+
+if ( !function_exists( 'buzzblog_getVariable' ) ) :
+/*
+ * Gets the current values from REDUX, and if not there, grabs the defaults
+ */
+function buzzblog_getVariable( $name = '', $key = '' ) {
+  global $buzzblog_options;
+  $hs_options = $buzzblog_options;
+  $hs_var = '';
+  if ( empty( $name ) && !empty( $hs_options ) ) {
+	$hs_var = $hs_options;
+  } else {
+      if ( $key ) {
+	  if ( !empty( $hs_options[$name][$key] ) ) {
+        $hs_var = $hs_options[$name][$key];
+      }else {
+        $hs_var = '';
+      }
+	  }else {
+    if ( !empty( $hs_options[$name] ) ) {
+	$hs_var = $hs_options[$name];
+ } else {
+$hs_var = '';
+}
+}
+}
+return $hs_var;
+}
+endif;
+
+
+function buzzblog_set_posts_per_page_for_gallery_categories( $query ) {
+$buzzblog_images_per_page = buzzblog_getVariable('images_per_page');
+if($buzzblog_images_per_page ==''){$buzzblog_images_per_page = 6;}
+if (!is_admin() && $query->is_main_query() && is_tax('gallery_categories')) {
+
+        $query->set( 'posts_per_page', $buzzblog_images_per_page );
+        return;
+    }
+}
+add_action( 'pre_get_posts', 'buzzblog_set_posts_per_page_for_gallery_categories' );
+
+add_filter('wp_nav_menu_items','buzzblog_wcmenucart', 10, 2);
+function buzzblog_wcmenucart($menu, $args) {
+$subscribe = $search = $woo = '';
+
+if ( $args->theme_location == 'primary-menu'  ) {
+        
+if ( buzzblog_getVariable('hs_newsletter_display')=='yes' ) {
+			$subscribe = '<li><a class="newsletter-ajax-popup" href="#hs_signup">'.theme_locals("subscribe").'</a></li>';
+}
+			
+if ( buzzblog_getVariable('g_search_box_id')=='yes') { 
+			$search = '<li class="hidden-xs search-icon-link"><a class="search-icon popup-with-zoom-anim md-trigger" href="#small-dialog"><i class="hs hs-search-2"></i></a></li>';
+}
+
+if (class_exists( 'WooCommerce' )) {
+		$woo_icon = 'hs hs-cart5';
+		$woo = buzzblog_add_cart_in_menu($woo_icon);
+}
+
+}  
+    $menu = $menu . $subscribe . $search . $woo;
+    return $menu;
+}
+
+/**
+ * Display the cookie banner.
+ */
+add_filter( 'wp_footer', 'buzzblog_cookie_banner' );
+function buzzblog_cookie_banner() {
+
+	if ( 'no' == buzzblog_getVariable( 'cookie_banner' ) or '' == buzzblog_getVariable( 'cookie_banner' ) ) {
+		return;
+	}
+
+	if ( '' == buzzblog_getVariable( 'cookie_text' ) ) {
+		return;
+	}
+
+	if ( isset( $_COOKIE['buzzblog_cookie_banner'] ) && '1' == $_COOKIE['buzzblog_cookie_banner'] ) {
+		return;
+	}
+
+	ob_start(); ?>
+
+	<div id="buzzblog-cookie-banner" class="buzzblog-cookie-banner-wrap alert alert-warning alert-dismissible" role="alert">
+		<div class="container">
+		<div class="row"><div class="col-md-12">
+			<a href="#" id="buzzblog-dismiss-cookie" class="btn" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true"><?php esc_html_e('Got it!', 'buzzblog'); ?></span>
+			</a>
+			<?php echo htmlspecialchars_decode( buzzblog_getVariable( 'cookie_text' ) ); ?>
+		</div></div></div>
+	</div>
+
+	<?php $output = ob_get_contents();
+	ob_end_clean();
+
+	/**
+	 * Filter a cookie banner.
+	 */
+	$output = apply_filters( 'buzzblog_cookie_banner', $output );
+
+	printf( '%s', $output );
+}
+
+add_action( 'wp_enqueue_scripts', 'buzzblog_enqueue_utility_scripts' );
+function buzzblog_enqueue_utility_scripts() {
+if ( 'no' != buzzblog_getVariable( 'cookie_banner' ) && !( isset( $_COOKIE['buzzblog_cookie_banner'] ) && '1' == $_COOKIE['buzzblog_cookie_banner'] )) { 
+		wp_enqueue_script('buzzblog-cookie-banner', trailingslashit(get_template_directory_uri()).'/js/jquery.buzzblog.cookie.banner.js',array( 'jquery' ),'1.0.0',true);
+		wp_localize_script( 'buzzblog-cookie-banner', 'cookie_banner_args', array(
+				'name'    => 'buzzblog_cookie_banner',
+				'value'   => '1',
+				'options' => array(
+					'expires' => YEAR_IN_SECONDS,
+					'path'    => ( defined( 'COOKIEPATH' ) ? COOKIEPATH : '/' ),
+					'domain'  => ( defined( 'COOKIE_DOMAIN' ) ? COOKIE_DOMAIN : '' ),
+				),
+			)
+		);
+	}
+	}
+
+	
+
+
+require_once get_template_directory() . '/includes/main-menu/class-mega-menu.php';
+require_once get_template_directory() . '/post-template/slideshow.php';
+
+function buzzblog_theme_mega_menu_query( $args ) {
+	$args['posts_per_page'] = 4;
+	return $args;
+}
+add_filter( 'buzzblog_mega_menu_query', 'buzzblog_theme_mega_menu_query' );
+
+if (class_exists( 'WooCommerce' )) {
+	require_once get_template_directory() . '/woocommerce-scripts/woocommerce-scripts.php';
+}
+
+add_filter('the_content', 'buzzblog_add_my_signature');
+function buzzblog_add_my_signature($content) {
+if(buzzblog_getVariable('signature_text') !='') {
+$buzzblog_my_custom_signature_text = '<div class="signature-text">'.buzzblog_getVariable('signature_text').'</div>'; 
+}else{$buzzblog_my_custom_signature_text ='';}
+
+if(buzzblog_getVariable('custom-signature-image','url') !='') {
+$buzzblog_my_custom_signature_image = '<div class="signature-image"><img src="'.esc_url( buzzblog_getVariable('custom-signature-image','url')).'" width="'.esc_attr( buzzblog_getVariable('custom-signature-image','width')).'" height="'.esc_attr( buzzblog_getVariable('custom-signature-image','height')).'" alt="signature" title="signature" /></div>';
+}else{$buzzblog_my_custom_signature_image ='';}
+
+if(is_single() && !is_home() && 'no' != buzzblog_getVariable( 'custom-signature-display' )) {
+$content .= '<div class="custom-signature">'.$buzzblog_my_custom_signature_text.$buzzblog_my_custom_signature_image.'</div>';
+}
+return $content;
+}
+
+
+function buzzblog_promo_areaslides() {
+global $buzzblog_options;
+if (isset($buzzblog_options['promo-areaslides']) && !empty($buzzblog_options['promo-areaslides'])) {
+echo '<div class="hercules-promotion-area"><div class="row">';		
+$i=0;
+foreach($buzzblog_options['promo-areaslides'] as $slide) {
+echo '<div class="col-md-4 col-sm-4 col-xs-4"><div class="hercules-promotion-item" style="background-image:url('.esc_url($slide['image']).')"><a href="'.esc_url($slide['url']).'" class="hercules-promotion-link"><div class="hercules-promotion-overlay"><h4>'.esc_attr($slide['title']).'</h4></div></a></div></div>';
+$i++;
+if($i==3) break;
+}
+echo '</div></div>';
+ } 
+} 
+
+function buzzblog_posts_in_category($query){
+global $buzzblog_options;
+if(isset($buzzblog_options['items_cat_count'])){
+$items_cat_count = $buzzblog_options['items_cat_count'];
+if($items_cat_count ==''){$items_cat_count = 6;}
+    if ($query->is_category && $query->is_main_query()) {
+		if ($items_cat_count) {
+            $query->set('posts_per_archive_page', $items_cat_count);
+			}
+    }
+}
+}
+add_filter('pre_get_posts', 'buzzblog_posts_in_category');
+
+//* Add custom body class to the head
+add_filter( 'body_class','buzzblog_body_classes' );
+function buzzblog_body_classes( $classes ) {
+if(buzzblog_getVariable('header_layout')== 'topleftmenu' && !buzzblog_is_touch( 'phone' )){
+$classes[] = 'top-left-menu';
+}
+$classes[] = buzzblog_is_touch() ? 'touch' : 'no-touch';
+if(buzzblog_getVariable('main_layout')== 'boxed'){
+$classes[] = 'boxed';
+}else{
+$classes[] = 'wide';
+}
+return $classes;    
+}
+
+//Pinterest button
+function buzzblog_pinterest_share() {
+$permalink = get_permalink(get_the_ID());
+$titleget = wp_strip_all_tags(get_the_title());
+
+$pinterest_share = buzzblog_getVariable('pinterest_share');
+if ($pinterest_share=='yes') { $pinterestimage = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full' );
+echo '<a target="_blank" class="hs hs-pinterest pinterest-share-icon" href="http://pinterest.com/pin/create/button/?url='.esc_url( $permalink).'&amp;media='.esc_attr($pinterestimage[0]).'&amp;description='.str_replace(" ", "%20", $titleget).'" data-pin-do="buttonPin" data-pin-custom="true"></a>';
+ } 
+}
+
+function buzzblog_tc_more_buttons($buttons) {
+    array_push($buttons, 'fontselect','fontsizeselect','styleselect');
+ 
+    return $buttons;
+}
+add_filter("mce_buttons_3", "buzzblog_tc_more_buttons");
+
+//* remove id from menu items
+add_filter('nav_menu_item_id', 'buzzblog_clear_nav_menu_item_id', 10, 4);
+function buzzblog_clear_nav_menu_item_id($menu_item_item_id, $item, $args, $depth) {
+    return "";
+}
+
+if ( ! function_exists( 'buzzblog_entry_date' ) ) :
+function buzzblog_entry_date() {
+	$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+    $timeformat = buzzblog_getVariable('date_format') ? buzzblog_getVariable('date_format') : 'U';
+	if ( get_the_time( $timeformat ) !== get_the_modified_time( $timeformat ) ) {
+		$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+	}
+    $time_format = buzzblog_getVariable('date_format') ? buzzblog_getVariable('date_format') : '';
+	$time_string = sprintf( $time_string,
+		esc_attr( get_the_date( 'c' ) ),
+		get_the_date($time_format),
+		esc_attr( get_the_modified_date( 'c' ) ),
+		get_the_modified_date($time_format)
+	);
+
+	printf( '<span class="posted-on"><i class="hs hs-calendar"></i> <span class="screen-reader-text">%1$s </span><a href="%2$s" rel="bookmark">%3$s</a></span>',
+		esc_html_x( 'Posted on', 'Used before publish date.', 'buzzblog' ),
+		esc_url( get_permalink() ),
+		$time_string
+	);
+}
+endif;
+if( ! class_exists( 'Hercules_Likes' ) ) {
+require_once get_template_directory() . '/includes/class-hercules-likes.php';
+}
+
+function buzzblog_formaticons() {
+ $postid = get_the_ID();
+ $formaticons = get_post_format( $postid );
+if(is_sticky()){
+	echo "<div class=\"ribbon-wrapper-featured hidden-phone\"><div class=\"ribbon-featured\">".theme_locals('featured')."</div></div>";
+	}else{ 
+ switch ($formaticons) {
+    case "aside":
+        echo "<div class=\"post-formats hidden-phone\"><i class=\"hs hs-newspaper\"></i></div>"; 
+        break;
+    case "gallery":
+        echo "<div class=\"post-formats hidden-phone\"><i class=\"hs hs-picture\"></i></div>";
+        break;
+    case "link":
+        echo "<div class=\"post-formats hidden-phone\"><i class=\"hs hs-link\"></i></div>";
+        break;
+	case "image":
+        echo "<div class=\"post-formats hidden-phone\"><i class=\"fa fa-picture-o\"></i></div>"; 
+        break;
+	case "quote":
+        echo "<div class=\"post-formats hidden-phone\"><i class=\"icon-quote\"></i></div>";
+        break;
+	case "audio":
+        echo "<div class=\"post-formats hidden-phone\"><i class=\"hs hs-note\"></i></div>";
+        break;
+	case "video":
+        echo "<div class=\"post-formats hidden-phone\"><i class=\"hs hs-video-1\"></i></div>";
+        break;	
+	case "":
+        echo "<div class=\"post-formats hidden-phone\"><i class=\"hs hs-doc-text\"></i></div>";
+        break;		
+}
+}
+}
+
+function buzzblog_no_front_sticky($qry) {
+  if ((is_front_page() && buzzblog_getVariable('blog_sidebar_pos')=='masonry2sideright') or (is_front_page() && buzzblog_getVariable('blog_sidebar_pos')=='masonry2sideleft') ) {
+    $qry->set('post__not_in',get_option( 'sticky_posts' ));
+  }
+}
+add_action('pre_get_posts','buzzblog_no_front_sticky'); 
+
+add_filter('wp_list_categories', 'buzzblog_cat_count_span');
+function buzzblog_cat_count_span($links) {
+  $links = str_replace('</a> (', '</a> <span>(', $links);
+  $links = str_replace(')', ')</span>', $links);
+  return $links;
+}
+//google analytics
+function buzzblog_google_analytics() {
+if(buzzblog_getVariable('google_analytics')){	
+    echo buzzblog_getVariable('google_analytics'); 
+}
+}
+add_action('wp_head', 'buzzblog_google_analytics');
+?>

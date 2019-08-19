@@ -1,0 +1,21 @@
+<?php get_header(); ?>
+<div class="content-holder clearfix">
+    <div class="container">
+<?php get_template_part('title'); ?>
+				<div class="row">
+                    <div class="col-md-8 <?php if (buzzblog_getVariable('blog_sidebar_pos')==''){echo 'right';}else{echo esc_attr( buzzblog_getVariable('blog_sidebar_pos')); } ?>" id="content">
+                        <?php get_template_part("loop/loop-author"); ?>
+						<?php get_template_part('post-template/post-nav'); ?>
+                    </div>
+                    <div class="col-md-4 sidebar <?php if (buzzblog_getVariable('sidebar_sticky')=='stickysidebar') { echo 'sticky-sidebar'; } ?>" id="sidebar">
+                        <div class="theiaStickySidebar">
+                        <?php dynamic_sidebar("hs_main_sidebar"); ?>
+                    </div></div>
+                 </div>
+    </div>
+</div>
+
+<footer class="footer">
+<?php get_template_part('wrapper/wrapper-footer'); ?>
+</footer>
+<?php get_footer(); ?>

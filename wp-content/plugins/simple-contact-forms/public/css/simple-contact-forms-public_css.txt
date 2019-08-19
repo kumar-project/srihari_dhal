@@ -1,0 +1,11 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+.error-notice {
+	display: none;
+}
+.error-notice.show {
+	display: block;
+}

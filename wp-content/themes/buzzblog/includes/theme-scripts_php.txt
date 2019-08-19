@@ -1,0 +1,242 @@
+<?php
+/*	Register javascript
+/*-----------------------------------------------------------------------------------*/
+
+add_action('init', 'buzzblog_register_script');
+add_action('wp_enqueue_scripts', 'buzzblog_print_script_footer');
+
+function buzzblog_register_script() {
+if (!is_admin()) {
+wp_register_script('owlcarousel', trailingslashit(get_template_directory_uri()).'js/owl.carousel.min.js', array('jquery'), '2.1',true);
+wp_register_script('justifiedGallery', trailingslashit(get_template_directory_uri()).'js/jquery.justifiedGallery.min.js', array('jquery'), '3.6.3',true);
+wp_register_script('easing', trailingslashit(get_template_directory_uri()).'js/jquery.easing.1.3.js', array('jquery'), '1.3',true);
+wp_register_script('magnificpopup', trailingslashit(get_template_directory_uri()).'js/jquery.magnificpopup.js', array('jquery'), '0.9.9',true);
+wp_register_script('buzzblog-custom-plugins', trailingslashit(get_template_directory_uri()).'js/jquery.plugins.js', array('jquery'), '3.1.5',true);
+wp_register_script('buzzblog-custom', trailingslashit(get_template_directory_uri()).'js/custom.js', array('jquery'), '1.0',true);		
+wp_register_script('buzzblog-AnimatedHeader', trailingslashit(get_template_directory_uri()).'js/AnimatedHeader.js', array('jquery'), '1.0.0',true);
+wp_register_script('masonry', trailingslashit(get_template_directory_uri()).'js/masonry.pkgd.min.js', array('jquery'), '3.3.1',true);
+wp_register_script('easy-pie-chart', trailingslashit(get_template_directory_uri()).'js/jquery.easy-pie-chart.js', array('jquery'), '2.1.7',true);
+wp_register_script('bootstrap', trailingslashit(get_template_directory_uri()).'bootstrap/js/bootstrap.min.js', array('jquery'), '3.2',true);
+wp_register_script('buzzblog-jflickrfeed', trailingslashit(get_template_directory_uri()).'js/jflickrfeed.js', array('jquery'), '1.0',false);
+}
+}
+
+function buzzblog_print_script_footer() {
+global $buzzblog_options;
+// Localize the infinitescroll with new data
+$buzzblog_infinitescroll_data = array(
+	'load_more' => esc_html__('Load more', 'buzzblog'),
+    'you_reached_the_end' => esc_html__('No more items to load.', 'buzzblog'),
+	'offset' => $buzzblog_options['loadmore_offset'], 
+	'pagination_type' => $buzzblog_options['pagination_type'],
+);
+wp_localize_script( 'buzzblog-custom', 'inf_var', $buzzblog_infinitescroll_data );
+	wp_enqueue_script(array(
+		'easing',
+		'magnificpopup',
+		'buzzblog-custom-plugins', 
+		'buzzblog-custom', 
+		'bootstrap',
+		'justifiedGallery',
+		'owlcarousel'
+	));
+}
+
+// Loading styles
+function buzzblog_styles()
+{
+if (!is_admin()) {
+		wp_register_style( 'bootstrap', trailingslashit(get_template_directory_uri()) . 'bootstrap/bootstrap.min.css', false, '1.0', 'all' );
+		wp_enqueue_style( 'bootstrap' );
+		
+		wp_register_style( 'fontawesome', trailingslashit(get_template_directory_uri()) . 'bootstrap/font-awesome.min.css', false, '1.0', 'all' );
+		wp_enqueue_style( 'fontawesome' );
+		wp_register_style( 'buzzblog-social-icons', trailingslashit(get_template_directory_uri()) . 'bootstrap/hercules-social.css', false, '1.0', 'all' );
+		wp_enqueue_style( 'buzzblog-social-icons' );
+		wp_register_style( 'magnificpopup', trailingslashit(get_template_directory_uri()) . 'css/magnificpopup.css', false, '1.0', 'all' );
+		wp_enqueue_style( 'magnificpopup' );
+		wp_register_style( 'buzzblog-woocommerce', trailingslashit(get_template_directory_uri()) . 'hs-woocommerce.css', false, '1.0', 'all' );
+			//WooCommerce
+    if ( function_exists( 'is_woocommerce' ) ) {
+    	wp_enqueue_style('buzzblog-woocommerce'); 
+	}
+		wp_register_style( 'buzzblog-mainstyle', trailingslashit(get_stylesheet_directory_uri()) . 'style.css', false, '1.0', 'all' );
+		wp_enqueue_style( 'buzzblog-mainstyle' );
+wp_register_style( 'buzzblog-responsive', trailingslashit(get_template_directory_uri()) . 'responsive.css', false, '1.0', 'all' );
+		wp_enqueue_style( 'buzzblog-responsive' );
+		wp_register_style( 'owlcarousel', trailingslashit(get_template_directory_uri()) . 'css/owl.carousel.css', false, '1.0', 'all' );
+		wp_enqueue_style( 'owlcarousel' );
+	}
+}
+add_action('wp_enqueue_scripts','buzzblog_styles');
+
+/*	Register and load admin javascript
+/*-----------------------------------------------------------------------------------*/
+
+function buzzblog_admin_js($hook) {
+	if ($hook == 'post.php' || $hook == 'post-new.php') {
+		wp_register_script('hs-admin', trailingslashit(get_template_directory_uri()) . 'js/jquery.custom.admin.js', 'jquery');
+		wp_enqueue_script('hs-admin');
+		
+	}
+}
+add_action('admin_enqueue_scripts','buzzblog_admin_js',10,1);
+
+if ( ! function_exists( 'buzzblog_is_touch' ) ) {
+
+	function buzzblog_is_touch( $check = 'all' ) {
+		static $buzzblog_mobile_detect;
+
+		if ( ! isset( $buzzblog_mobile_detect ) ) {
+			if ( ! class_exists( 'Buzzblog_Mobile_Detect' ) ) {
+				require_once 'main-menu/class-buzzblog-mobile-detect.php';
+			}
+			$detect = new buzzblog_Mobile_Detect;
+			$is_tablet = $detect->isTablet();
+			$is_mobile = $detect->isMobile();
+			$buzzblog_mobile_detect = array(
+				'phone' => $is_mobile && ! $is_tablet,
+				'tablet' =>  $is_tablet,
+				'all' => $is_mobile,
+			);
+		}
+
+		return $buzzblog_mobile_detect[$check];
+	}
+}
+
+/**
+ * Setup menu icon functionality
+ */
+function buzzblog_setup_menu_icons() {
+	if( is_admin() ) {
+		add_filter( 'wp_edit_nav_menu_walker', 'buzzblog_custom_edit_nav_menu_walker' );
+		add_action( 'wp_nav_menu_item_custom_fields', 'buzzblog_add_menu_icon_option', 12, 4 );
+		add_action( 'wp_update_nav_menu_item', 'buzzblog_update_menu_icon_option', 10, 3 );
+		add_action( 'delete_post', 'buzzblog_remove_menu_icon_meta', 1, 3 );
+	} else {
+		add_filter( 'wp_nav_menu_args', 'buzzblog_add_menu_item_title_filter' );
+		add_filter( 'wp_nav_menu', 'buzzblog_remove_menu_item_title_filter' );
+	}
+}
+
+/**
+ * Start looking for menu icons
+ */
+function buzzblog_add_menu_item_title_filter( $args ) {
+	add_filter( 'the_title', 'buzzblog_add_menu_icon', 10, 2 );
+	return $args;
+}
+
+/**
+ * The menu is rendered, we longer need to look for menu icons
+ */
+function buzzblog_remove_menu_item_title_filter( $nav_menu ) {
+	remove_filter( 'the_title', 'buzzblog_add_menu_icon', 10, 2 );
+	return $nav_menu;
+}
+
+/**
+ * Setup custom walker for Nav_Menu_Edit
+ */
+function buzzblog_custom_edit_nav_menu_walker( $walker ) {
+	if( ! class_exists( 'Buzzblog_Walker_Nav_Menu_Edit' ) ) {
+		include_once get_template_directory() . '/includes/class-hercules-walker-menu-edit.php';
+	}
+
+	return 'Buzzblog_Walker_Nav_Menu_Edit';
+}
+
+/**
+ * Save the icon meta for a menu item. Also removes the meta entirely if the field is cleared.
+ */
+function buzzblog_update_menu_icon_option( $menu_id, $menu_item_db_id, $args ) {
+	if( isset( $_POST['menu-item-icon'] ) && isset( $_POST['menu-item-icon'][$menu_item_db_id] ) ) {
+		$meta_key = '_menu_item_icon';
+		$meta_value = buzzblog_get_menu_icon( $menu_item_db_id );
+		$menu_item_icon =  $_POST['menu-item-icon'][$menu_item_db_id];
+		$new_meta_value = sanitize_text_field( $menu_item_icon );
+
+		if ( $new_meta_value && '' == $meta_value )
+			add_post_meta( $menu_item_db_id, $meta_key, $new_meta_value, true );
+		elseif ( $new_meta_value && $new_meta_value != $meta_value )
+			update_post_meta( $menu_item_db_id, $meta_key, $new_meta_value );
+		elseif ( '' == $new_meta_value && $meta_value )
+			delete_post_meta( $menu_item_db_id, $meta_key, $meta_value );
+	}
+}
+
+/**
+ * Clean up the icon meta field when a menu item is deleted
+ */
+function buzzblog_remove_menu_icon_meta( $post_id ) {
+	if( is_nav_menu_item( $post_id ) ) {
+		delete_post_meta( $post_id, '_menu_item_icon' );
+	}
+}
+
+/**
+ * Display the icon picker for menu items in the backend
+ */
+function buzzblog_add_menu_icon_option( $item_id, $item, $depth, $args ) {
+	$saved_meta = buzzblog_get_menu_icon( $item_id );
+?>
+	<p class="field-icon description description-thin">
+		<label for="edit-menu-item-icon-<?php echo esc_attr( $item_id ); ?>">
+			<?php esc_html_e( 'Enter Icon Code', 'buzzblog' ) ?><br/>
+			<input type="text" name="menu-item-icon[<?php echo esc_attr( $item_id ); ?>]" id="edit-menu-item-icon-<?php echo esc_attr( $item_id ) ?>" size="8" class="edit-menu-item-icon buzzblog_field_icon" value="<?php echo esc_attr( $saved_meta ); ?>">
+		</label>
+	</p>
+<?php }
+
+/**
+ * Returns the icon name chosen for a given menu item
+ */
+function buzzblog_get_menu_icon( $item_id ) {
+	return get_post_meta( $item_id, '_menu_item_icon', true );
+}
+
+/**
+ * Append icon to a menu item
+ */
+function buzzblog_add_menu_icon( $title, $id = '' ) {
+	if ( '' != $id ) {
+		if ( $icon = buzzblog_get_menu_icon( $id ) ) {
+			$title = '<i class="fa ' . esc_attr( buzzblog_get_fa_icon_classname( $icon ) ) . '"></i> ' . $title;
+		}
+	}
+	return $title;
+}
+function buzzblog_get_fa_icon_classname( $icon ) {
+	if( ! ( substr( $icon, 0, 3 ) == 'fa-' ) ) {
+		$icon = 'fa-' . $icon;
+	}
+
+	return $icon;
+}
+add_action( 'init', 'buzzblog_setup_menu_icons' );
+
+add_action( 'wp_enqueue_scripts', 'buzzblog_theme_enqueue_scripts' );
+if ( ! function_exists( 'buzzblog_theme_enqueue_scripts' ) ) {
+	/**
+	 * Enqueue Stylesheets and Scripts
+	 */
+	function buzzblog_theme_enqueue_scripts(){
+
+		// Get theme version for buzzblog theme scripts and styles
+		
+wp_enqueue_script( 'buzzblog-theme-script',	trailingslashit(get_template_directory_uri()).'includes/main-menu/js/buzzblog.mega-menu.js', array('jquery'), '1.0', true );
+		// Inject variable values in gallery script
+		wp_localize_script( 'buzzblog-theme-script', 'buzzblogScript',
+			array(
+				'fixedHeader' 	=> 'fixed-header',
+				'ajax_nonce'   	=> wp_create_nonce('ajax_nonce'),
+				'ajax_url'	   	=> admin_url( 'admin-ajax.php' ),
+				'events'		=> buzzblog_is_touch() ? 'click' : 'mouseenter',
+				'top_nav_side'  => is_rtl() ? 'right' : 'left',
+				'main_nav_side' => is_rtl() ? 'left' : 'right'
+			)
+		);
+	}
+}
+?>
